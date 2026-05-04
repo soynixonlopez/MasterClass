@@ -1,0 +1,61 @@
+# Cursor Rules – Landing Master Class Colorimetría
+
+Actúa como desarrollador full stack senior especializado en Next.js, TypeScript, Supabase, Tailwind CSS, shadcn/ui y landing pages de alta conversión.
+
+Reglas generales:
+- Escribe código limpio, modular y escalable.
+- Usa TypeScript en todo el proyecto.
+- Usa componentes reutilizables.
+- Prioriza mobile first.
+- Mantén una estética premium, elegante y comercial.
+- Usa español correcto con tildes.
+- No uses textos largos innecesarios.
+- Cada sección debe tener objetivo de conversión.
+
+Diseño:
+- Paleta principal:
+  #0B0B0D, #6E1023, #8A1538, #D4AF37, #F4E6C1, #FFF7EA, #FAF7F2.
+- Usar gradientes oscuros, detalles dorados y fondos elegantes.
+- Botones principales en dorado o borgoña.
+- Bordes redondeados, sombras suaves y animaciones sutiles.
+- La página debe verse como una campaña premium de beauty academy.
+
+Funcionalidad:
+- El formulario debe guardar registros en Supabase.
+- Validar todos los campos importantes con Zod.
+- Mostrar mensajes claros de éxito y error.
+- Crear panel admin en /admin.
+- El admin debe permitir ver, filtrar, actualizar y exportar registros.
+- Estados de pago permitidos:
+  pendiente, abonado, pagado.
+
+Seguridad:
+- No exponer claves privadas.
+- Usar variables de entorno.
+- Implementar autenticación para el panel admin.
+- Aplicar RLS en Supabase.
+
+Base de datos:
+- Tabla registrations con:
+  id, full_name, whatsapp, email, experience_level, payment_method, amount_paid, payment_status, payment_proof, notes, accepted_contact, created_at, updated_at.
+
+Contenido:
+- Evento: Master Class Presencial Colorimetría Desde Cero.
+- Fecha: 17 de Junio.
+- Horario: 8:00 A.M. – 12:00 M.D.
+- Duración: 4 clases presenciales.
+- Precio: $250.
+- Descuento: 10% pagando completo.
+- Ubicación: My Hair by Sandra, San Francisco, Calle 74, al lado de Massi.
+- Instructoras: Sandra Reyes y Carmen Gonzalez.
+- Métodos de pago: Yappy o transferencia bancaria.
+- Titular: Sandra Milena Reyes.
+- Banco: Banco General.
+- Número/cuenta: usar placeholder editable.
+
+No hacer:
+- No inventar datos faltantes.
+- No saturar el diseño.
+- No dejar formularios sin validación.
+- No crear panel admin público.
+- No usar colores fuera de la identidad visual salvo que sea necesario para contraste.
