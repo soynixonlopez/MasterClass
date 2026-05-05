@@ -52,7 +52,7 @@ export function ProblemDesire() {
               {EVENT.instructors.map((expert) => (
                 <div
                   key={expert.name}
-                  className="flex h-20 w-full max-w-[260px] items-center justify-center sm:h-24 md:h-28 md:max-w-[300px]"
+                  className="flex h-20 w-full max-w-[260px] items-center justify-center overflow-hidden sm:h-24 md:h-28 md:max-w-[300px]"
                 >
                   <Image
                     src={expert.logoSrc}

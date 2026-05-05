@@ -190,7 +190,7 @@ export function RegistrationFormSection() {
                 )}
               </div>
 
-              <div className="flex items-start gap-3 rounded-xl border-2 border-wine/15 bg-linear-to-br from-champagne/35 to-white p-4 sm:p-5">
+              <div className="flex min-w-0 items-start gap-3 rounded-xl border-2 border-wine/15 bg-linear-to-br from-champagne/35 to-white p-4 sm:p-5">
                 <Checkbox
                   id="accepted_contact"
                   checked={!!accepted}
@@ -202,7 +202,7 @@ export function RegistrationFormSection() {
                   aria-invalid={!!errors.accepted_contact}
                   className="border-wine data-checked:bg-wine data-checked:text-white"
                 />
-                <div className="grid gap-1.5 leading-snug">
+                <div className="grid min-w-0 gap-1.5 leading-snug">
                   <Label
                     htmlFor="accepted_contact"
                     className="cursor-pointer text-base font-normal !text-carbon dark:!text-carbon"

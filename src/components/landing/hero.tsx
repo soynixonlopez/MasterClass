@@ -26,8 +26,8 @@ export function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_15%_0%,rgba(212,175,55,0.2),transparent_50%),radial-gradient(ellipse_at_90%_30%,rgba(138,21,56,0.4),transparent_45%),linear-gradient(180deg,rgba(11,11,13,0)_0%,rgba(11,11,13,0.9)_100%)]"
       />
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pb-24 pt-24 md:gap-14 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-28">
-        <div>
+      <div className="relative mx-auto grid min-w-0 max-w-7xl gap-12 px-4 pb-24 pt-24 md:gap-14 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-28">
+        <div className="min-w-0">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -137,7 +137,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.55, delay: 0.1 }}
-          className="relative mx-auto w-full max-w-md scroll-mt-28"
+          className="relative mx-auto min-w-0 w-full max-w-md scroll-mt-28"
         >
           <div className="relative overflow-hidden rounded-3xl border-2 border-gold/40 shadow-2xl shadow-black/60 ring-4 ring-gold/10">
             {embedSrc ? (
@@ -178,8 +178,8 @@ export function Hero() {
               </div>
             )}
           </div>
-          <div className="mt-5 flex justify-center [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <p className="whitespace-nowrap px-2 text-center text-[0.8125rem] font-medium leading-none tracking-tight text-gold sm:text-sm md:text-base">
+          <div className="mt-5 w-full px-1">
+            <p className="text-center text-pretty text-[0.8125rem] font-medium leading-snug tracking-tight text-gold sm:text-sm md:text-base">
               Mira el video y entiende por qué este entrenamiento es para ti.
             </p>
           </div>

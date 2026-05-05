@@ -59,7 +59,7 @@ export function EventDetailsSection() {
               )}
             >
               <Icon className="mt-1 size-7 shrink-0 text-wine" aria-hidden />
-              <div>
+              <div className="min-w-0">
                 <dt className="text-xs font-bold uppercase tracking-wider text-elevation/55">
                   {label}
                 </dt>

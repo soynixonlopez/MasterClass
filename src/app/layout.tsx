@@ -44,7 +44,7 @@ export default function RootLayout({
       className={`${plusJakarta.variable} ${oswald.variable} h-full scroll-smooth antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col overflow-x-hidden bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>
