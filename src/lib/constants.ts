@@ -7,7 +7,7 @@ export const EVENT = {
   schedule: "8:00 A.M. a 12:00 M.D.",
   format: "4 clases presenciales de 8:00 A.M. a 12:00 M.D.",
   locationName: "My Hair by Sandra",
-  locationAddress: "San Francisco, Calle 74, al lado de Massi",
+  locationAddress: "San Francisco, Calle 74, al lado de Maissi",
   priceUsd: 250,
   discountFullPayPercent: 10,
   instructors: [
