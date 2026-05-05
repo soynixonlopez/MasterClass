@@ -53,24 +53,27 @@ export function PricingSection() {
             .
           </p>
         </Reveal>
-        <StaggerReveal className="mt-14 grid gap-8 md:grid-cols-2 md:items-stretch">
+        <StaggerReveal className="mt-14 grid min-w-0 gap-8 md:grid-cols-2 md:items-stretch">
           <StaggerBox
             className={cn(
-              "flex min-h-0 flex-col justify-center rounded-3xl border-2 border-gold/30 bg-gradient-to-br from-wine/60 to-burgundy/70 p-8 text-champagne shadow-2xl md:p-10",
+              "flex min-w-0 min-h-0 flex-col justify-center rounded-3xl border-2 border-gold/30 bg-gradient-to-br from-wine/60 to-burgundy/70 p-8 text-champagne shadow-2xl md:p-10",
               LANDING_CARD_HOVER
             )}
           >
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-bold uppercase tracking-widest text-gold">
                 Precio master class
               </p>
-              <p className="mt-3 font-heading text-5xl font-bold text-warm md:text-6xl">
+              <p className="mt-3 break-words font-heading text-5xl font-bold text-warm md:text-6xl">
                 {price}
               </p>
-              <p className="mt-5 text-lg leading-relaxed text-champagne/95">
+              <p className="mt-5 break-words [overflow-wrap:anywhere] text-lg leading-relaxed text-champagne/95">
                 Si pagas <strong className="text-warm">todo de una vez</strong>, tu
                 inversión queda en{" "}
-                <span className="text-2xl font-bold text-gold">{discounted}</span> (
+                <span className="text-2xl font-bold text-gold break-words [overflow-wrap:anywhere]">
+                  {discounted}
+                </span>{" "}
+                (
                 {EVENT.discountFullPayPercent}% de descuento).
               </p>
               <p className="mt-4 text-base text-champagne/90">
@@ -85,21 +88,21 @@ export function PricingSection() {
           </StaggerBox>
           <StaggerBox
             className={cn(
-              "rounded-3xl border-2 border-white/10 bg-elevation/90 p-8 text-champagne md:p-10",
+              "min-w-0 rounded-3xl border-2 border-white/10 bg-elevation/90 p-8 text-champagne md:p-10",
               LANDING_CARD_HOVER
             )}
           >
             <p className="font-heading text-xl font-bold uppercase text-warm md:text-2xl">
               Paso a paso
             </p>
-            <p className="mt-3 text-lg text-champagne/90">
+            <p className="mt-3 break-words [overflow-wrap:anywhere] text-lg text-champagne/90">
               Así reservas tu lugar. Los datos bancarios aparecen solo después de
               registrarte.
             </p>
             <StaggerOl className="mt-8 space-y-6">
               {steps.map((step, i) => (
                 <StaggerListItem key={step.title}>
-                  <div className="flex gap-4">
+                  <div className="flex min-w-0 gap-4">
                     <span
                       className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-gold/50 bg-gold/10 font-heading text-lg font-bold text-gold"
                       aria-hidden
@@ -110,7 +113,7 @@ export function PricingSection() {
                       <p className="text-base font-bold uppercase tracking-wide text-gold/95 md:text-sm">
                         {step.title}
                       </p>
-                      <p className="mt-1 text-base leading-relaxed text-champagne/90 md:text-[15px]">
+                      <p className="mt-1 break-words [overflow-wrap:anywhere] text-base leading-relaxed text-champagne/90 md:text-[15px]">
                         {step.body}
                       </p>
                     </div>
