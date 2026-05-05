@@ -1,4 +1,10 @@
 import Image from "next/image";
+import {
+  LANDING_CARD_HOVER,
+  Reveal,
+  StaggerArticle,
+  StaggerReveal,
+} from "@/components/landing/landing-motion";
 import { MotionSection } from "@/components/landing/motion-section";
 import { EVENT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -7,30 +13,31 @@ export function InstructorsSection() {
   return (
     <MotionSection className="bg-cream py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <h2 className="text-center font-heading text-3xl font-bold uppercase text-carbon sm:text-4xl md:text-5xl">
-          Aprende con quienes sí saben enseñar
-        </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-center text-lg font-medium text-elevation/85 md:text-xl">
-          Dos marcas, una misión: llevarte de la teoría a la mano en salón, sin
-          atajos.
-        </p>
-        <div className="mt-14 grid gap-8 md:grid-cols-2">
+        <Reveal className="text-center">
+          <h2 className="font-heading text-4xl font-bold uppercase leading-[1.08] text-carbon sm:text-5xl md:text-6xl">
+            Quién te lleva del diagnóstico al resultado
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg font-medium leading-relaxed text-elevation/85 md:text-xl">
+            Personas que viven la colorimetría en sala, no solo teoría desde un podio.
+          </p>
+        </Reveal>
+        <StaggerReveal className="mt-14 grid gap-8 md:grid-cols-2">
           {EVENT.instructors.map((i) => (
-            <article
+            <StaggerArticle
               key={i.name}
-              className="overflow-hidden rounded-3xl border-2 border-wine/15 bg-warm shadow-xl shadow-wine/10"
+              className={cn(
+                "overflow-hidden rounded-3xl border-2 border-wine/15 bg-warm shadow-xl shadow-wine/10",
+                LANDING_CARD_HOVER
+              )}
             >
-              <div className="relative flex min-h-[240px] items-center justify-center bg-black px-6 py-12 md:min-h-[280px] md:px-10 md:py-14">
+              <div className="relative aspect-4/5 w-full bg-black md:aspect-3/4">
                 <Image
-                  src={i.logoSrc}
-                  alt={`Logo ${i.name}`}
-                  width={400}
-                  height={180}
-                  className={cn(
-                    "max-h-[200px] max-w-full object-contain md:max-h-[240px]",
-                    i.name.includes("Carmen") &&
-                      "scale-[1.15] md:scale-125"
-                  )}
+                  src={i.photoSrc}
+                  alt={`Retrato de ${i.name}, experta`}
+                  fill
+                  className="object-cover object-[50%_20%]"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={i.name.includes("Sandra")}
                 />
               </div>
               <div className="p-7 md:p-8">
@@ -41,13 +48,12 @@ export function InstructorsSection() {
                   {i.role}
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-elevation/80 md:text-base">
-                  Parte del equipo que impartirá la Master Class presencial en{" "}
-                  {EVENT.locationName}.
+                  {i.bio}
                 </p>
               </div>
-            </article>
+            </StaggerArticle>
           ))}
-        </div>
+        </StaggerReveal>
       </div>
     </MotionSection>
   );

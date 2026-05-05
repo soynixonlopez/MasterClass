@@ -41,10 +41,10 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${plusJakarta.variable} ${oswald.variable} h-full scroll-smooth antialiased dark`}
+      className={`${plusJakarta.variable} ${oswald.variable} h-full scroll-smooth antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-carbon text-foreground">
+      <body className="flex min-h-full flex-col bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>

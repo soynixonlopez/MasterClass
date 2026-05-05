@@ -238,7 +238,7 @@ export function RegistrationsDashboard() {
   });
 
   return (
-    <div className="mx-auto min-h-screen max-w-7xl px-4 py-8 md:px-6">
+    <div className="mx-auto w-full max-w-7xl rounded-2xl border border-border/80 bg-card/80 px-4 py-8 shadow-sm ring-1 ring-wine/5 md:px-6 md:py-10">
       <div className="flex flex-col gap-4 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="font-heading text-2xl font-semibold">
@@ -271,7 +271,10 @@ export function RegistrationsDashboard() {
             ["Pagado", counts.pagado],
           ] as const
         ).map(([label, n]) => (
-          <Card key={label}>
+          <Card
+            key={label}
+            className="border-border/80 bg-card shadow-sm ring-1 ring-wine/8"
+          >
             <CardContent className="px-4 py-3">
               <p className="text-xs font-medium text-muted-foreground">
                 {label}
@@ -324,10 +327,10 @@ export function RegistrationsDashboard() {
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-xl border border-border">
+      <div className="mt-6 overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="border-b bg-muted/50 hover:bg-muted/50">
               <TableHead>Fecha registro</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>WhatsApp</TableHead>

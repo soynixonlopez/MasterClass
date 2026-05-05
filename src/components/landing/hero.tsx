@@ -8,7 +8,6 @@ import {
   MapPin,
   Play,
   ShieldCheck,
-  Sparkles,
   Users,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -27,22 +26,21 @@ export function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_15%_0%,rgba(212,175,55,0.2),transparent_50%),radial-gradient(ellipse_at_90%_30%,rgba(138,21,56,0.4),transparent_45%),linear-gradient(180deg,rgba(11,11,13,0)_0%,rgba(11,11,13,0.9)_100%)]"
       />
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pb-24 pt-24 md:grid-cols-2 md:items-center md:gap-14 md:px-6 lg:gap-16 lg:pt-28">
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pb-24 pt-24 md:gap-14 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-28">
         <div>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border-2 border-gold/40 bg-wine/50 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-champagne"
+            className="mb-5 inline-block max-w-full rounded-full border border-gold/45 bg-wine/45 px-5 py-2 text-center text-[11px] font-semibold uppercase leading-snug tracking-[0.18em] text-champagne shadow-sm backdrop-blur-sm sm:text-xs sm:tracking-[0.22em]"
           >
-            <Sparkles className="size-4 text-gold" aria-hidden />
             {EVENT.title}
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05 }}
-            className="font-heading text-4xl font-bold uppercase leading-[1.05] tracking-tight text-warm sm:text-5xl lg:text-6xl xl:text-7xl"
+            className="font-heading text-[clamp(2.5rem,11vw,4.1rem)] font-bold uppercase leading-[1.04] tracking-tight text-warm sm:text-[clamp(2.75rem,8vw,4.5rem)] md:text-7xl lg:text-8xl xl:text-[5rem] xl:leading-[1.02]"
           >
             {EVENT.heroTitle}
           </motion.h1>
@@ -50,7 +48,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-champagne sm:text-xl"
+            className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-champagne md:text-xl"
           >
             {EVENT.heroSubtitle}
           </motion.p>
@@ -63,7 +61,7 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-2 rounded-lg border border-gold/30 bg-carbon/60 px-3 py-2 text-sm font-semibold text-gold md:text-base">
               <ShieldCheck className="size-5 shrink-0" aria-hidden />
-              100% presencial · Aula real
+              100% presencial, aula real
             </span>
             <span className="inline-flex items-center gap-2 rounded-lg border border-champagne/20 bg-carbon/60 px-3 py-2 text-sm font-semibold text-champagne md:text-base">
               <Users className="size-5 shrink-0" aria-hidden />
@@ -98,41 +96,35 @@ export function Hero() {
             </li>
           </motion.ul>
 
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.17 }}
-            className="mt-6 max-w-xl text-sm font-medium text-champagne/85 md:text-base"
-          >
-            Conoce inversión, descuentos y facilidades de pago más abajo: primero
-            asegúrate de que{" "}
-            <strong className="text-gold">este entrenamiento es para ti</strong>.
-          </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.2 }}
-            className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center"
+            transition={{ duration: 0.45, delay: 0.17 }}
+            className="mt-10 flex w-full max-w-xl flex-col gap-4 lg:max-w-none lg:flex-row lg:flex-wrap lg:items-center lg:gap-4"
           >
-            <AnimatedCta href="#registro" variant="primary">
-              Sí, quiero mi cupo
+            <AnimatedCta
+              href="#registro"
+              variant="primary"
+              fullWidth
+              title="Formulario breve: nombre, WhatsApp y correo. Aquí no se pide tarjeta."
+            >
+              Apartar mi cupo
             </AnimatedCta>
             <Link
               href="#video-promo"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
-                "h-12 min-h-12 justify-center rounded-full border-2 border-white/20 bg-white/5 px-6 text-base font-semibold text-warm backdrop-blur-sm hover:bg-white/10 md:h-14 md:px-8 md:text-lg"
+                "flex min-h-[3.25rem] w-full shrink-0 justify-center rounded-full border-2 border-white/25 bg-white/5 px-8 text-lg font-semibold text-warm backdrop-blur-sm hover:bg-white/10 md:min-h-14 md:text-xl lg:w-auto"
               )}
             >
-              <Play className="mr-2 size-5 fill-current" aria-hidden />
-              Ver video
+              <Play className="mr-2 size-5 shrink-0 fill-current" aria-hidden />
+              Ver el video primero
             </Link>
             <Link
               href="#curso"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "lg" }),
-                "text-base font-semibold text-champagne underline-offset-4 hover:text-gold hover:underline md:text-lg"
+                "min-h-[2.75rem] w-full justify-center text-center text-lg font-semibold text-champagne underline-offset-4 hover:text-gold hover:underline md:text-xl lg:w-auto lg:min-w-0"
               )}
             >
               Ver programa del curso →
@@ -145,11 +137,11 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.55, delay: 0.1 }}
-          className="relative mx-auto w-full max-w-xl scroll-mt-28 md:max-w-none"
+          className="relative mx-auto w-full max-w-md scroll-mt-28"
         >
           <div className="relative overflow-hidden rounded-3xl border-2 border-gold/40 shadow-2xl shadow-black/60 ring-4 ring-gold/10">
             {embedSrc ? (
-              <div className="relative aspect-video w-full bg-elevation">
+              <div className="relative aspect-[9/16] w-full bg-elevation">
                 <iframe
                   title="Video promocional Master Class Colorimetría Desde Cero"
                   src={embedSrc}
@@ -161,14 +153,14 @@ export function Hero() {
                 />
               </div>
             ) : (
-              <div className="relative aspect-video w-full">
+              <div className="relative aspect-[9/16] w-full">
                 <Image
                   src={PLACEHOLDER_IMAGES.hero}
-                  alt="Ambiente de salón profesional — configura NEXT_PUBLIC_YOUTUBE_VIDEO_ID para mostrar tu video"
+                  alt="Ambiente de salón profesional. Configura NEXT_PUBLIC_YOUTUBE_VIDEO_ID para tu video."
                   fill
                   priority
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 560px"
+                  sizes="(max-width: 768px) 100vw, 400px"
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-carbon/75 p-6 text-center">
                   <Play className="mb-3 size-14 text-gold" aria-hidden />
@@ -186,12 +178,11 @@ export function Hero() {
               </div>
             )}
           </div>
-          <p className="mt-4 text-center text-sm text-champagne/75 md:text-base">
-            <span className="inline-flex items-center gap-1 font-semibold text-gold">
-              <Play className="size-4" aria-hidden />
+          <div className="mt-5 flex justify-center [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <p className="whitespace-nowrap px-2 text-center text-[0.8125rem] font-medium leading-none tracking-tight text-gold sm:text-sm md:text-base">
               Mira el video y entiende por qué este entrenamiento es para ti.
-            </span>
-          </p>
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,10 +1,10 @@
 export const EVENT = {
-  title: "Master Class Presencial – Colorimetría Desde Cero",
-  heroTitle: "Domina la Colorimetría desde Cero",
+  title: "Master Class presencial, Colorimetría desde cero",
+  heroTitle: "Menos improvisar en el sillón, más control en el resultado",
   heroSubtitle:
-    "Aprende técnicas profesionales con Sandra Reyes y Carmen González en una experiencia presencial diseñada para transformar tu talento.",
+    "Una tarde en salón con Sandra Reyes y Carmen González: ver el cabello con criterio, mezclar con intención y aplicar con seguridad. El grupo es pequeño; cuando se completa, cerramos la lista.",
   dateLabel: "17 de Junio de 2026",
-  schedule: "8:00 A.M. – 12:00 M.D.",
+  schedule: "8:00 A.M. a 12:00 M.D.",
   format: "4 clases presenciales de 8:00 A.M. a 12:00 M.D.",
   locationName: "My Hair by Sandra",
   locationAddress: "San Francisco, Calle 74, al lado de Massi",
@@ -13,12 +13,16 @@ export const EVENT = {
   instructors: [
     {
       name: "Sandra Reyes",
-      role: "Colorista profesional experta · My Hair by Sandra",
+      role: "Empresaria en belleza y colorimetría, fundadora de My Hair by Sandra",
+      bio: "Sandra lidera My Hair by Sandra y acompaña a equipos que quieren resultados predecibles en color. En esta sesión comparte el criterio que usa en salón día a día, sin atajos de manual.",
+      photoSrc: "/img/señoraSandra.png",
       logoSrc: "/img/sandraLogo.png",
     },
     {
       name: "Carmen González",
-      role: "Colorista profesional experta",
+      role: "Colorista profesional y estilista, más de 30 años trabajando con clientela internacional",
+      bio: "Carmen se mueve entre consulta técnica, corrección y terminaciones pulidas frente al espejo. En esta clase aporta su ojo curtido para que lleves de vuelta al salón ideas que funcionan cuando la cliente ya está en el sillón.",
+      photoSrc: "/img/señoraCarmen.png",
       logoSrc: "/img/carmenLogo.png",
     },
   ],

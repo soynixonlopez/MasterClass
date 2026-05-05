@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { LANDING_CARD_HOVER, Reveal } from "@/components/landing/landing-motion";
 import { MotionSection } from "@/components/landing/motion-section";
 import { AnimatedCta } from "@/components/landing/animated-cta";
 import { EVENT } from "@/lib/constants";
@@ -11,67 +12,78 @@ export function ProblemDesire() {
       className="bg-cream py-20 text-elevation md:py-28"
     >
       <div className="mx-auto max-w-4xl px-4 md:px-6">
-        <p className="text-center text-sm font-bold uppercase tracking-widest text-wine">
-          ¿Te suena familiar?
-        </p>
-        <h2 className="mt-4 text-center font-heading text-3xl font-bold uppercase leading-tight text-carbon sm:text-4xl md:text-5xl">
-          El miedo a equivocarte el color te está costando clientas
-        </h2>
-        <div className="mt-10 space-y-6 text-center text-lg font-medium leading-relaxed text-elevation/90 md:text-xl">
+        <Reveal>
+          <p className="text-center text-sm font-bold uppercase tracking-widest text-wine">
+            ¿Te suena familiar?
+          </p>
+          <h2 className="mt-5 text-center font-heading text-4xl font-bold uppercase leading-[1.08] text-carbon sm:text-5xl md:text-6xl">
+            Si el resultado no cuenta la misma historia que tu consulta inicial, algo se perdió por el
+            camino
+          </h2>
+        </Reveal>
+        <Reveal
+          delay={0.06}
+          className="mt-10 space-y-6 text-center text-lg font-normal leading-relaxed text-elevation/90 md:text-xl"
+        >
           <p>
-            Mezclas que no rinden, tonos que se tapan, resultados que no cuadran con
-            lo prometido… <strong className="text-wine">No es falta de ganas</strong>:
-            es falta de un sistema claro que puedas replicar en salón.
+            En color la clienta mide rápido si lo que acordaste en la consulta encaja con lo que ve al
+            mirar el resultado.
           </p>
           <p>
-            Esta Master Class presencial está diseñada para que{" "}
-            <strong className="text-carbon">dejes de adivinar</strong> y empieces a
-            trabajar con criterio: diagnóstico, altura, reflejos, neutralización y
-            aplicación con{" "}
-            <strong className="text-wine">dos coloristas expertas al lado tuyo</strong>.
+            En esta tarde presencial ordenas diagnóstico, alturas, reflejos, neutralización y aplicación
+            junto a{" "}
+            <strong className="font-medium text-wine">Sandra Reyes y Carmen González</strong>, desde la
+            primera observación del cabello hasta el acabado frente a ella.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mt-14 border-t border-wine/10 pt-14">
-          <p className="text-center text-xs font-bold uppercase tracking-[0.22em] text-wine">
-            En colaboración con
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-10 md:gap-16">
-            {EVENT.instructors.map((expert) => (
-              <div
-                key={expert.name}
-                className="flex h-24 w-full max-w-[280px] items-center justify-center sm:h-28 md:h-32 md:max-w-[320px]"
-              >
-                <Image
-                  src={expert.logoSrc}
-                  alt={`Logo ${expert.name}`}
-                  width={320}
-                  height={140}
-                  className={cn(
-                    "max-h-full max-w-full object-contain",
-                    expert.name.includes("Carmen") &&
-                      "scale-[1.2] sm:scale-125 md:scale-[1.35]"
-                  )}
-                  sizes="(max-width: 640px) 280px, 320px"
-                />
-              </div>
-            ))}
+        <Reveal
+          delay={0.12}
+          className={cn(
+            "mt-14 rounded-3xl border-2 border-wine/15 bg-white/90 p-8 text-center shadow-lg shadow-wine/5 md:mt-16 md:p-10",
+            LANDING_CARD_HOVER
+          )}
+        >
+          <div className="pb-8">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-wine">
+              En colaboración con
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-10 md:mt-8 md:gap-14">
+              {EVENT.instructors.map((expert) => (
+                <div
+                  key={expert.name}
+                  className="flex h-20 w-full max-w-[260px] items-center justify-center sm:h-24 md:h-28 md:max-w-[300px]"
+                >
+                  <Image
+                    src={expert.logoSrc}
+                    alt={`Logo ${expert.name}`}
+                    width={320}
+                    height={140}
+                    className={cn(
+                      "max-h-full max-w-full object-contain transition-transform duration-300 motion-safe:hover:scale-[1.03]",
+                      expert.name.includes("Carmen") &&
+                        "scale-[1.15] sm:scale-[1.2] md:scale-[1.28]"
+                    )}
+                    sizes="(max-width: 640px) 260px, 300px"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="mt-14 rounded-3xl border-2 border-wine/15 bg-warm/90 p-8 text-center shadow-lg md:mt-16 md:p-10">
-          <p className="font-heading text-xl font-bold uppercase text-carbon md:text-2xl">
-            Tu próximo nivel empieza con una decisión
+          <p className="mt-8 font-heading text-2xl font-bold uppercase leading-tight text-carbon md:mt-10 md:text-[1.85rem] lg:text-[2.15rem]">
+            Cuando encaje con tu sala, mejor reservar hoy que dejarlo para después
           </p>
-          <p className="mt-3 text-base text-elevation/85 md:text-lg">
-            Haz clic, regístrate y recibe en WhatsApp los pasos para asegurar tu cupo.
+          <p className="mx-auto mt-4 max-w-lg text-lg font-normal leading-relaxed text-elevation/85 md:text-xl">
+            Si te encaja el plan, deja tu contacto abajo. Al enviar verás el grupo, formas de pagar y dónde mandar
+            el comprobante, sin dar vueltas.
           </p>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex justify-center md:mt-10">
             <AnimatedCta href="#registro" variant="primary">
-              Reservar mi lugar ahora
+              Completar mi solicitud
             </AnimatedCta>
           </div>
-        </div>
+        </Reveal>
       </div>
     </MotionSection>
   );

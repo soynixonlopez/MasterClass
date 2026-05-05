@@ -10,6 +10,10 @@ type AnimatedCtaProps = {
   children: React.ReactNode;
   variant?: "primary" | "secondary";
   className?: string;
+  /** Tooltip al pasar el cursor (opcional) */
+  title?: string;
+  /** Ocupa todo el ancho hasta `lg`; en desktop grande vuelve a tamaño contenido */
+  fullWidth?: boolean;
 };
 
 export function AnimatedCta({
@@ -17,18 +21,23 @@ export function AnimatedCta({
   children,
   variant = "primary",
   className,
+  title,
+  fullWidth = false,
 }: AnimatedCtaProps) {
   const isPrimary = variant === "primary";
 
   return (
     <motion.div
-      className="inline-flex"
+      className={cn(fullWidth ? "flex w-full lg:inline-flex lg:w-auto" : "inline-flex")}
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 22 }}
     >
       <motion.span
-        className="inline-flex rounded-full"
+        className={cn(
+          "rounded-full",
+          fullWidth ? "flex w-full lg:inline-flex lg:w-auto" : "inline-flex"
+        )}
         animate={
           isPrimary
             ? {
@@ -48,11 +57,13 @@ export function AnimatedCta({
       >
         <Link
           href={href}
+          title={title}
           className={cn(
             buttonVariants({ size: "lg" }),
             isPrimary
-              ? "relative h-12 min-h-[3rem] rounded-full border-0 bg-gradient-to-r from-gold via-[#e8c65c] to-gold px-8 text-base font-semibold tracking-wide text-carbon shadow-lg shadow-gold/30 md:h-14 md:min-h-[3.5rem] md:px-10 md:text-lg"
-              : "h-12 min-h-[3rem] rounded-full border-2 border-gold/50 bg-transparent px-6 text-base font-semibold text-champagne hover:bg-wine/50 md:h-14 md:px-8 md:text-lg",
+              ? "relative min-h-[3.5rem] rounded-full border-0 bg-linear-to-r from-gold via-[#e8c65c] to-gold px-10 py-4 text-lg font-bold tracking-wide text-carbon shadow-lg shadow-gold/35 md:min-h-16 md:px-14 md:text-xl md:tracking-normal"
+              : "min-h-[3.5rem] rounded-full border-2 border-gold/50 bg-transparent px-8 py-4 text-lg font-bold text-champagne hover:bg-wine/50 md:min-h-16 md:px-10 md:text-xl",
+            fullWidth && "w-full justify-center lg:w-auto",
             className
           )}
         >

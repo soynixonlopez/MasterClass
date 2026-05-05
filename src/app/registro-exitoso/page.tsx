@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MessageCircle, ExternalLink } from "lucide-react";
+import { MessageCircle, ExternalLink, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EVENT } from "@/lib/constants";
@@ -11,227 +11,307 @@ import {
 } from "@/lib/pricing";
 
 const groupUrl = process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL?.trim() ?? "";
-const phone1 = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") ?? "";
-const phone2 =
+
+/** Dígitos WhatsApp — Sandra (principal) */
+const sandraDigits =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") ?? "";
+
+/** Carmen vía env dedicado */
+const carmenEnvDigits =
+  (
+    process.env.NEXT_PUBLIC_WHATSAPP_CARMEN?.trim() ||
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_CARMEN?.trim() ||
+    ""
+  ).replace(/\D/g, "") ?? "";
+
+/** Fallback segundo contacto si no hay env de Carmen */
+const secondLineDigits =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_2?.replace(/\D/g, "") ?? "";
-/** Acepta NEXT_PUBLIC_WHATSAPP_CARMEN o NEXT_PUBLIC_WHATSAPP_NUMBER_CARMEN (tu .env). */
-const carmenRaw =
-  process.env.NEXT_PUBLIC_WHATSAPP_CARMEN?.trim() ||
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_CARMEN?.trim() ||
-  "";
-const carmenPhone = carmenRaw.replace(/\D/g, "");
-const yappy =
-  process.env.NEXT_PUBLIC_YAPPY_NUMBER ?? "Configura en .env.local";
-const bankAccount =
-  process.env.NEXT_PUBLIC_BANK_ACCOUNT ?? "Configura en .env.local";
+
+const nameSandra =
+  process.env.NEXT_PUBLIC_WHATSAPP_NAME_SANDRA?.trim() || "Sandra González";
+const nameCarmen =
+  process.env.NEXT_PUBLIC_WHATSAPP_NAME_CARMEN?.trim() || "Carmen González";
+
+const holder =
+  process.env.NEXT_PUBLIC_BANK_ACCOUNT_HOLDER?.trim() ??
+  "Sandra Milena Reyes";
+const bankName =
+  process.env.NEXT_PUBLIC_BANK_NAME?.trim() ?? "Banco General";
+
+/** Cuenta IBAN / número (obligatorio para mostrar bloque bancario útil) */
+const bankAccountRaw = process.env.NEXT_PUBLIC_BANK_ACCOUNT?.trim() ?? "";
+const bankAccountConfigured =
+  bankAccountRaw.length > 0 && !bankAccountRaw.includes("Configura");
 
 const receiptMessage = encodeURIComponent(
   `Hola, envío mi comprobante de pago para la Master Class: ${EVENT.title}.`
 );
 
-const carmenMessage = encodeURIComponent(
-  "Hola, me registré en la Master Class de Colorimetría y necesito ayuda."
+const supportMessage = encodeURIComponent(
+  "Hola, escribo por soporte después de registrar la Master Class (pago u otra consulta)."
 );
 
 function waLink(num: string) {
   return `https://wa.me/${num}?text=${receiptMessage}`;
 }
 
-function carmenWaHref() {
-  return `https://wa.me/${carmenPhone}?text=${carmenMessage}`;
+function supportWaLink(num: string) {
+  return `https://wa.me/${num}?text=${supportMessage}`;
 }
 
+type ReceiptContact = { digits: string; label: string };
+
+function buildReceiptContacts(): ReceiptContact[] {
+  const list: ReceiptContact[] = [];
+  if (sandraDigits)
+    list.push({ digits: sandraDigits, label: nameSandra });
+
+  let carmenDigits = carmenEnvDigits;
+  if (!carmenDigits && secondLineDigits && secondLineDigits !== sandraDigits)
+    carmenDigits = secondLineDigits;
+
+  if (
+    carmenDigits &&
+    carmenDigits !== sandraDigits &&
+    !list.some((x) => x.digits === carmenDigits)
+  ) {
+    list.push({ digits: carmenDigits, label: nameCarmen });
+  }
+
+  return list;
+}
+
+/** Soporte flotante: mismo WhatsApp que Sandra (`NEXT_PUBLIC_WHATSAPP_NUMBER`) */
+const supportDigits =
+  sandraDigits || carmenEnvDigits || secondLineDigits || "";
+
+const supportHref =
+  supportDigits.length > 0 ? supportWaLink(supportDigits) : "";
+
 export const metadata: Metadata = {
-  title: "Registro recibido · Próximos pasos",
+  title: "Registro recibido",
   description:
-    "Grupo de WhatsApp, datos bancarios y envío de comprobante para tu ticket de acceso.",
+    "Grupo de WhatsApp, transferencia bancaria y envío de comprobante por WhatsApp.",
   robots: { index: false, follow: false },
 };
 
-const stepCircle =
-  "flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-wine/40 bg-wine text-sm font-heading font-bold text-warm";
+const sectionTitle =
+  "font-heading text-lg font-bold uppercase tracking-wide text-carbon md:text-xl";
 
 export default function RegistroExitosoPage() {
-  const phones = [phone1, phone2].filter(Boolean);
+  const receiptContacts = buildReceiptContacts();
 
   return (
-    <div className="min-h-screen bg-cream pb-28 text-carbon md:pb-24">
-      <div className="mx-auto max-w-lg px-4 py-10 md:px-6 md:py-14">
-        <p className="text-center text-sm font-bold uppercase tracking-widest text-wine">
-          ¡Registro recibido!
-        </p>
-        <h1 className="mt-3 text-center font-heading text-3xl font-bold uppercase leading-tight md:text-4xl">
-          Tus pasos
-        </h1>
-        <p className="mt-4 text-center text-base leading-relaxed text-elevation/85">
-          Hazlo en orden. Aquí tienes todo para tu{" "}
-          <strong>entrada al evento</strong>.
-        </p>
+    <div className="min-h-screen bg-cream pb-32 text-carbon md:pb-28">
+      <div className="mx-auto max-w-2xl px-5 py-12 md:px-8 md:py-16 lg:max-w-[42rem]">
+        <header className="text-center md:px-2">
+          <p className="text-sm font-bold uppercase tracking-[0.22em] text-wine md:text-[0.8rem]">
+            ¡Registro recibido!
+          </p>
+          <h1 className="mt-4 font-heading text-3xl font-bold uppercase leading-[1.12] text-carbon md:text-4xl lg:text-[2.65rem]">
+            Grupo, transferencia y comprobante
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-[1.05rem] leading-relaxed text-elevation/80 md:text-lg">
+            Tienes todo en esta pantalla: únete al grupo, transfieres solo a la cuenta indicada y envías tu
+            captura por WhatsApp cuando hayas pagado.
+          </p>
+        </header>
 
-        <div className="mt-10 rounded-3xl border-2 border-wine/15 bg-white p-6 shadow-lg md:p-8">
-          <ol className="space-y-8">
-            <li className="flex gap-4">
-              <span className={stepCircle} aria-hidden>
-                1
-              </span>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <p className="font-heading text-base font-bold uppercase text-carbon">
-                  Entra al grupo
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-elevation/90">
-                  Avisos y logística del taller.
-                </p>
-                {groupUrl ? (
-                  <Link
-                    href={groupUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      buttonVariants({ size: "lg" }),
-                      "mt-4 inline-flex h-11 w-full max-w-full items-center justify-center gap-2 rounded-full border-0 bg-wine text-sm text-warm hover:opacity-95 sm:w-auto sm:min-w-[240px]"
-                    )}
-                  >
-                    Unirme al grupo
-                    <ExternalLink className="size-4" aria-hidden />
-                  </Link>
-                ) : (
-                  <p className="mt-3 rounded-lg bg-warm/80 p-3 text-xs text-elevation/85">
-                    Falta configurar{" "}
-                    <code className="rounded bg-cream px-1">
-                      NEXT_PUBLIC_WHATSAPP_GROUP_URL
-                    </code>{" "}
-                    en <code className="rounded bg-cream px-1">.env.local</code>.
-                  </p>
+        <div className="mt-12 rounded-[1.75rem] border-2 border-wine/15 bg-white p-8 shadow-xl shadow-wine/5 md:mt-14 md:p-12 md:px-14">
+          {/* Grupo */}
+          <section className="pb-12 md:pb-14">
+            <p className={sectionTitle}>Grupo del encuentro</p>
+            <p className="mt-4 text-base leading-relaxed text-elevation/88 md:text-[1.0625rem]">
+              Anuncios del taller, ubicación práctica y avisos de último minuto van en el grupo oficial.
+            </p>
+            {groupUrl ? (
+              <Link
+                href={groupUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "mt-8 flex min-h-[3.25rem] w-full items-center justify-center gap-2 rounded-full border-0 bg-wine px-6 text-[0.95rem] font-bold text-warm hover:opacity-[0.97] md:text-base",
                 )}
+              >
+                Unirme al grupo
+                <ExternalLink className="size-[1.125rem] shrink-0" aria-hidden />
+              </Link>
+            ) : (
+              <div className="mt-8 rounded-2xl border border-wine/20 bg-warm/90 p-5 text-sm text-elevation/85 md:p-6">
+                Configura{" "}
+                <code className="rounded bg-white px-1.5 py-0.5 text-xs font-mono text-carbon ring-1 ring-wine/10">
+                  NEXT_PUBLIC_WHATSAPP_GROUP_URL
+                </code>{" "}
+                en <code className="rounded px-1.5 py-0.5 text-xs">.env.local</code> para mostrar el
+                botón de invitación.
               </div>
-            </li>
+            )}
+          </section>
 
-            <li className="flex gap-4">
-              <span className={stepCircle} aria-hidden>
-                2
-              </span>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <p className="font-heading text-base font-bold uppercase text-carbon">
-                  Paga
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-elevation/90">
-                  <strong>Lista:</strong> {formatMoneyUsd(getListPriceUsd())}{" "}
-                  (abonos/cuotas).{" "}
-                  <strong>Un solo pago:</strong>{" "}
-                  {formatMoneyUsd(getDiscountedFullPayUsd())} (
-                  {EVENT.discountFullPayPercent}% menos). Dilo en el mensaje del
-                  comprobante.
-                </p>
-                <dl className="mt-4 space-y-3 border-t border-wine/10 pt-4 text-sm">
-                  <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-2">
-                    <dt className="shrink-0 text-xs font-bold uppercase tracking-wide text-elevation/55">
-                      Titular
-                    </dt>
-                    <dd className="font-semibold text-carbon">
-                      Sandra Milena Reyes
-                    </dd>
-                  </div>
-                  <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-2">
-                    <dt className="shrink-0 text-xs font-bold uppercase tracking-wide text-elevation/55">
-                      Banco
-                    </dt>
-                    <dd className="font-semibold text-carbon">Banco General</dd>
-                  </div>
-                  <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-2">
-                    <dt className="shrink-0 text-xs font-bold uppercase tracking-wide text-elevation/55">
-                      Yappy / cuenta
-                    </dt>
-                    <dd className="font-mono text-[13px] text-carbon">
-                      <span className="block break-all">{yappy}</span>
-                      <span className="mt-1 block break-all">{bankAccount}</span>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </li>
+          {/* Pago */}
+          <section className="border-t border-wine/15 pt-12 md:pb-2 md:pt-14">
+            <p className={sectionTitle}>Solo cobramos por transferencia</p>
+            <p className="mt-5 text-base leading-relaxed text-elevation/88 md:text-[1.0625rem]">
+              <strong className="font-semibold text-carbon">
+                Lista: {formatMoneyUsd(getListPriceUsd())}
+              </strong>{" "}
+              (abonos o cuotas acordadas).{" "}
+              <strong className="font-semibold text-carbon">
+                Un solo pago: {formatMoneyUsd(getDiscountedFullPayUsd())}
+              </strong>{" "}
+              ({EVENT.discountFullPayPercent}% menos si pagas todo de una vez). Indica nombre y concepto en
+              la transferencia cuando puedas y repite lo mismo al enviar el comprobante.
+            </p>
 
-            <li className="flex gap-4">
-              <span className={stepCircle} aria-hidden>
-                3
-              </span>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <p className="font-heading text-base font-bold uppercase text-carbon">
-                  Envía el comprobante
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-elevation/90">
-                  Por WhatsApp, con tu captura. Así te enviamos el ticket de
-                  acceso.
-                </p>
-                {phones.length > 0 ? (
-                  <ul className="mt-4 flex flex-col gap-2">
-                    {phones.map((num, i) => (
-                      <li key={`${num}-${i}`}>
-                        <Link
-                          href={waLink(num)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex h-11 items-center justify-center gap-2 rounded-full border-2 border-wine/25 bg-cream text-sm font-semibold text-wine hover:bg-warm/50"
-                        >
-                          <MessageCircle className="size-4" aria-hidden />
-                          Enviar comprobante ({i === 0 ? "contacto 1" : "contacto 2"})
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-3 rounded-lg bg-warm/80 p-3 text-xs text-elevation/85">
-                    Configura{" "}
-                    <code className="rounded bg-white px-1">
-                      NEXT_PUBLIC_WHATSAPP_NUMBER
-                    </code>{" "}
-                    en <code className="rounded bg-white px-1">.env.local</code>.
-                  </p>
-                )}
-              </div>
-            </li>
+            <div className="mt-6 rounded-2xl border border-gold/35 bg-linear-to-br from-champagne/50 to-white p-5 md:p-6">
+              <p className="text-sm font-semibold leading-snug text-elevation md:text-[0.9375rem]">
+                Para <strong>Yappy, Zelle u otros medios</strong> no tenemos cobro directo desde esta página:
+                escríbenos a{" "}
+                <strong className="text-wine">soporte por WhatsApp</strong> y te orientamos caso por caso (usa
+                el botón verde del borde inferior o cualquier enlace verde más abajo).
+              </p>
+            </div>
 
-            <li className="flex gap-4">
-              <span className={stepCircle} aria-hidden>
-                4
-              </span>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <p className="font-heading text-base font-bold uppercase text-carbon">
-                  ¿Duda?
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-elevation/90">
-                  Escríbenos por WhatsApp si algo no queda claro; también está el{" "}
-                  <strong>botón verde de soporte</strong> abajo a la derecha.
-                </p>
+            {bankAccountConfigured ? (
+              <dl className="mt-10 space-y-0 divide-y divide-wine/10 rounded-2xl border border-wine/12 bg-cream/50 text-[0.9375rem] md:text-base">
+                <div className="flex flex-col gap-1 px-5 py-5 sm:flex-row sm:items-baseline sm:gap-8 md:px-6 md:py-6">
+                  <dt className="min-w-[7.5rem] shrink-0 text-xs font-bold uppercase tracking-wider text-elevation/55">
+                    Titular
+                  </dt>
+                  <dd className="font-semibold text-carbon">{holder}</dd>
+                </div>
+                <div className="flex flex-col gap-1 px-5 py-5 sm:flex-row sm:items-baseline sm:gap-8 md:px-6 md:py-6">
+                  <dt className="min-w-[7.5rem] shrink-0 text-xs font-bold uppercase tracking-wider text-elevation/55">
+                    Banco
+                  </dt>
+                  <dd className="font-semibold text-carbon">{bankName}</dd>
+                </div>
+                <div className="flex flex-col gap-1 px-5 py-5 sm:flex-row sm:items-start sm:gap-8 md:px-6 md:py-6">
+                  <dt className="min-w-[7.5rem] shrink-0 text-xs font-bold uppercase tracking-wider text-elevation/55">
+                    Transferencia a
+                  </dt>
+                  <dd className="break-all font-mono text-[0.9rem] font-semibold leading-relaxed tracking-tight text-carbon md:text-[0.95rem]">
+                    {bankAccountRaw}
+                  </dd>
+                </div>
+              </dl>
+            ) : (
+              <div className="mt-8 rounded-2xl border border-amber-200/80 bg-amber-50/90 p-5 text-sm leading-relaxed text-elevation/90 md:p-6">
+                Define{" "}
+                <code className="rounded bg-white px-1.5 py-0.5 font-mono text-xs ring-1 ring-wine/10">
+                  NEXT_PUBLIC_BANK_ACCOUNT
+                </code>{" "}
+                (y opcionalmente{" "}
+                <code className="rounded bg-white px-1 py-0.5 text-xs font-mono">
+                  NEXT_PUBLIC_BANK_ACCOUNT_HOLDER
+                </code>
+                ,{" "}
+                <code className="rounded bg-white px-1 py-0.5 text-xs font-mono">
+                  NEXT_PUBLIC_BANK_NAME
+                </code>
+                ) en tu <strong>.env.local</strong> para mostrar la cuenta de transferencia.
               </div>
-            </li>
-          </ol>
+            )}
+          </section>
+
+          {/* Comprobante WhatsApp */}
+          <section className="border-t border-wine/15 pt-12 md:pt-14">
+            <p className={sectionTitle}>Envía el comprobante por WhatsApp</p>
+            <p className="mt-5 text-base leading-relaxed text-elevation/88 md:text-[1.0625rem]">
+              {receiptContacts.length > 1
+                ? "Toca el botón que te convenga. Se abre WhatsApp con un mensaje listo; solo adjunta la "
+                : "Toca el botón verde. Se abre WhatsApp con un mensaje listo; solo adjunta la "}
+              <strong>captura o PDF del banco</strong>.
+            </p>
+
+            {receiptContacts.length > 0 ? (
+              <ul className="mt-10 flex flex-col gap-4 md:gap-5">
+                {receiptContacts.map(({ digits, label }) => (
+                  <li key={`${digits}-${label}`}>
+                    <Link
+                      href={waLink(digits)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={
+                        receiptContacts.length > 1
+                          ? `Enviar comprobante por WhatsApp — ${label}`
+                          : "Enviar comprobante por WhatsApp"
+                      }
+                      className={cn(
+                        "group flex w-full items-center gap-4 rounded-2xl border border-white/20 bg-[#25D366] px-5 py-4 shadow-md shadow-black/12 ring-2 ring-black/5 transition-[transform,box-shadow,background-color] motion-safe:hover:bg-[#20bd5a] motion-safe:hover:shadow-lg motion-safe:active:scale-[0.995] md:gap-5 md:rounded-[1.25rem] md:px-6 md:py-5",
+                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#128C7E]",
+                      )}
+                    >
+                      <span
+                        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white/20 md:size-12"
+                        aria-hidden
+                      >
+                        <MessageCircle className="size-[1.35rem] text-white md:size-6" strokeWidth={2} />
+                      </span>
+                      <span className="min-w-0 flex-1 text-left leading-snug">
+                        <span className="block font-bold tracking-tight text-white [text-shadow:0_1px_0_rgba(0,0,0,0.12)] md:text-[1.125rem]">
+                          Enviar comprobante aquí
+                        </span>
+                      </span>
+                      <ChevronRight
+                        className="size-6 shrink-0 text-white/90 transition-transform motion-safe:group-hover:translate-x-1 md:size-7"
+                        aria-hidden
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="mt-8 rounded-2xl border border-wine/20 bg-warm/90 p-5 text-sm text-elevation/85 md:p-6">
+                Configura al menos{" "}
+                <code className="rounded bg-white px-1.5 font-mono text-xs">
+                  NEXT_PUBLIC_WHATSAPP_NUMBER
+                </code>{" "}
+                (Sandra) y opcionalmente{" "}
+                <code className="rounded bg-white px-1 font-mono text-xs">
+                  NEXT_PUBLIC_WHATSAPP_CARMEN
+                </code>{" "}
+                o{" "}
+                <code className="rounded bg-white px-1 font-mono text-xs">
+                  NEXT_PUBLIC_WHATSAPP_NUMBER_2
+                </code>{" "}
+                en <strong>.env.local</strong>.
+              </div>
+            )}
+
+            <p className="mt-10 text-center text-[0.8125rem] leading-relaxed text-elevation/72 md:text-sm">
+              Con la captura validamos tu pago y te enviamos el acceso cuando corresponda.
+            </p>
+          </section>
         </div>
 
-        <p className="mt-8 text-center text-sm text-elevation/70">
+        <p className="mt-12 text-center text-[0.9375rem] text-elevation/70 md:mt-14">
           <Link
             href="/"
-            className="font-semibold text-wine underline-offset-2 hover:underline"
+            className="font-semibold text-wine underline-offset-4 transition hover:text-burgundy hover:underline"
           >
             Volver al inicio
           </Link>
         </p>
       </div>
 
-      {carmenPhone ? (
+      {supportHref ? (
         <a
-          href={carmenWaHref()}
+          href={supportHref}
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "fixed right-4 z-[100] flex items-center gap-2 rounded-full px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wine md:right-6",
-            "bottom-[max(1.25rem,env(safe-area-inset-bottom))] md:bottom-7",
-            "bg-[#25D366] hover:bg-[#20BD5A]"
+            "fixed right-5 z-[100] flex max-w-[min(100vw-2.5rem,22rem)] items-center gap-3 rounded-full px-5 py-3.5 font-semibold tracking-tight text-white shadow-lg shadow-black/20 transition-[transform,box-shadow] hover:brightness-[1.05] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#128C7E] md:right-8",
+            "bottom-[max(1.35rem,env(safe-area-inset-bottom))] md:bottom-8",
+            "bg-[#25D366]",
           )}
-          aria-label="Soporte por WhatsApp disponible"
+          aria-label="Soporte en línea por WhatsApp"
         >
-          <MessageCircle className="size-5 shrink-0" aria-hidden />
-          <span className="max-w-[12rem] leading-tight sm:max-w-none">
-            Soporte disponible
+          <MessageCircle className="size-6 shrink-0 text-white/95" aria-hidden />
+          <span className="min-w-0 flex-1 text-left text-[0.9375rem] leading-tight md:text-[1rem]">
+            Soporte en línea
           </span>
         </a>
       ) : null}

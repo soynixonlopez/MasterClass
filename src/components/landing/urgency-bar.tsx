@@ -1,6 +1,5 @@
 "use client";
 
-import { Flame, Timer } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function UrgencyBar() {
@@ -9,29 +8,31 @@ export function UrgencyBar() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden border-y-2 border-gold/40 bg-gradient-to-r from-burgundy via-wine to-burgundy py-4 text-champagne"
+      className="relative overflow-hidden border-y-2 border-gold/40 bg-linear-to-r from-burgundy via-wine to-burgundy py-4 text-champagne sm:py-4 md:py-4"
     >
-    <motion.div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 opacity-30"
-      animate={{ opacity: [0.15, 0.35, 0.15] }}
-      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      style={{
-        background:
-          "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.12) 45%, transparent 90%)",
-      }}
-    />
-      <p className="relative mx-auto flex max-w-5xl flex-col items-center justify-center gap-2 px-4 text-center sm:flex-row sm:gap-6 sm:text-left">
-        <span className="inline-flex items-center gap-2 font-heading text-lg font-bold uppercase tracking-wide text-warm sm:text-xl">
-          <Flame className="size-6 shrink-0 animate-pulse text-gold" aria-hidden />
-          Edición presencial limitada
-        </span>
-        <span className="hidden text-gold/60 sm:inline">|</span>
-        <span className="inline-flex max-w-md items-center gap-2 text-base font-medium sm:text-lg">
-          <Timer className="size-5 shrink-0 text-gold" aria-hidden />
-          Cada cupo cuenta: al llenar el grupo, cerramos inscripciones.
-        </span>
-      </p>
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-30"
+        animate={{ opacity: [0.15, 0.35, 0.15] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          background:
+            "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.12) 45%, transparent 90%)",
+        }}
+      />
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-5">
+        <div className="flex flex-col items-center gap-2.5 text-center sm:gap-3 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-4 md:gap-y-1">
+          <span className="font-heading text-base font-bold uppercase tracking-[0.12em] text-warm sm:text-lg md:text-xl md:tracking-wide">
+            Edición presencial limitada
+          </span>
+          <span className="hidden text-gold/50 md:inline md:shrink-0" aria-hidden>
+            ·
+          </span>
+          <span className="max-w-md text-sm font-medium leading-snug text-champagne/95 sm:max-w-none sm:text-base md:text-base lg:text-lg">
+            Cada cupo cuenta: al llenar el grupo, cerramos inscripciones.
+          </span>
+        </div>
+      </div>
     </motion.div>
   );
 }

@@ -24,7 +24,11 @@ export function WhatsAppFloat() {
       rel="noopener noreferrer"
       aria-label="Abrir WhatsApp"
       className={cn(
-        "fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/30 transition hover:scale-105 hover:shadow-xl md:bottom-8 md:right-8"
+        "fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/30",
+        "transition-[transform,box-shadow] duration-300 ease-out",
+        "motion-safe:hover:scale-110 motion-safe:hover:shadow-2xl",
+        "motion-reduce:hover:scale-100 motion-reduce:hover:shadow-lg",
+        "md:bottom-8 md:right-8"
       )}
     >
       <MessageCircle className="size-7" strokeWidth={1.75} />

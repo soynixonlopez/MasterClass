@@ -135,4 +135,87 @@
   html {
     @apply font-sans;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+/**
+ * WebKit/Chromium autofill pone un fondo azul-grisáceo que rompe campos blancos.
+ * Sombra interior imita el fondo deseado y alarga la transición para evitar parpadeos.
+ */
+@layer utilities {
+  .input-autofill-light:-webkit-autofill,
+  .input-autofill-light:-webkit-autofill:hover,
+  .input-autofill-light:-webkit-autofill:focus,
+  .input-autofill-light:-webkit-autofill:active {
+    -webkit-box-shadow: inset 0 0 0 1000px #ffffff;
+    box-shadow: inset 0 0 0 1000px #ffffff;
+    -webkit-text-fill-color: #171717;
+    caret-color: #171717;
+    transition: background-color 99999s ease-out;
+  }
+
+  /* Landing: títulos y “gatillos” más grandes en móvil/tablet */
+  .landing-h2 {
+    @apply font-heading font-bold uppercase tracking-tight;
+    font-size: clamp(2rem, 6.8vw, 2.8rem);
+    line-height: 1.08;
+  }
+  @media (width >= theme(--breakpoint-sm)) {
+    .landing-h2 {
+      font-size: clamp(2.55rem, 4.8vw, 3.05rem);
+    }
+  }
+  @media (width >= theme(--breakpoint-md)) {
+    .landing-h2 {
+      font-size: clamp(2.85rem, 4vw, 3.35rem);
+    }
+  }
+  @media (width >= theme(--breakpoint-lg)) {
+    .landing-h2 {
+      font-size: clamp(3.15rem, 3.25vw, 3.65rem);
+    }
+  }
+
+  .landing-h2-tight {
+    line-height: 1.08;
+  }
+
+  .landing-lead {
+    @apply font-medium;
+    font-size: clamp(1.0625rem, 3.5vw, 1.1875rem);
+    line-height: 1.65;
+  }
+  @media (width >= theme(--breakpoint-sm)) {
+    .landing-lead {
+      font-size: clamp(1.125rem, 2.35vw, 1.3125rem);
+    }
+  }
+  @media (width >= theme(--breakpoint-md)) {
+    .landing-lead {
+      font-size: clamp(1.1875rem, 1.9vw, 1.375rem);
+      line-height: 1.58;
+    }
+  }
+  @media (width >= theme(--breakpoint-lg)) {
+    .landing-lead {
+      font-size: 1.4375rem;
+      line-height: 1.52;
+    }
+  }
+
+  .landing-trigger {
+    @apply font-heading font-bold uppercase;
+    font-size: clamp(1.375rem, 4.2vw, 1.9375rem);
+    line-height: 1.2;
+  }
+  @media (width >= theme(--breakpoint-md)) {
+    .landing-trigger {
+      font-size: clamp(1.75rem, 2.85vw, 2.175rem);
+      line-height: 1.14;
+    }
+  }
 }
