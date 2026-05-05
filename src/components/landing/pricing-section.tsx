@@ -125,7 +125,11 @@ export function PricingSection() {
               href="#registro"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
-                "mt-6 w-full border-2 border-gold/50 text-warm hover:bg-gold/10 md:mt-8 md:h-12 md:text-base"
+                // outline trae `bg-background` (blanco en tema claro): aquí rompe el contraste sobre la tarjeta oscura
+                "mt-6 w-full border-2 border-gold/55 bg-transparent text-warm shadow-none",
+                "hover:border-gold/70 hover:bg-gold/15 hover:text-warm",
+                "focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/35",
+                "md:mt-8 md:h-12 md:min-h-12 md:text-base"
               )}
             >
               Ir al formulario de inscripción
