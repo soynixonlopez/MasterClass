@@ -5,6 +5,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useEffect, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,8 @@ const defaultValues: QuickRegistrationInput = {
   accepted_contact: false,
 };
 
+type PixelFn = (...args: unknown[]) => void;
+
 export function RegistrationFormSection() {
   const router = useRouter();
   const {
@@ -46,8 +49,27 @@ export function RegistrationFormSection() {
 
   const accepted = useWatch({ control, name: "accepted_contact" });
 
+  const fbq = useMemo<PixelFn | null>(() => {
+    if (typeof window === "undefined") return null;
+    const maybe = (window as unknown as { fbq?: PixelFn }).fbq;
+    return typeof maybe === "function" ? maybe : null;
+  }, []);
+
+  const trackedStart = useRef(false);
+  const trackedSuccess = useRef(false);
+
+  useEffect(() => {
+    if (!fbq) return;
+    // Vista del formulario (sin PII).
+    fbq("trackCustom", "RegistrationFormView");
+  }, [fbq]);
+
   async function onSubmit(data: QuickRegistrationInput) {
     try {
+      if (fbq) {
+        fbq("trackCustom", "RegistrationSubmitAttempt");
+      }
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,6 +92,12 @@ export function RegistrationFormSection() {
           msg ||
             "No pudimos enviar tu registro. Revisa tu conexión e inténtalo de nuevo.",
         );
+
+        if (fbq) {
+          fbq("trackCustom", "RegistrationSubmitError", {
+            category: res.status === 400 ? "validation-or-rls" : "server",
+          });
+        }
         return;
       }
 
@@ -79,10 +107,21 @@ export function RegistrationFormSection() {
       toast.success(
         `Registro recibido.${emailPart} Ya puedes revisar grupo y datos de pago en la siguiente pantalla.`,
       );
+
+      if (fbq && !trackedSuccess.current) {
+        trackedSuccess.current = true;
+        // Eventos estándar para optimización en Ads.
+        fbq("track", "Lead");
+        fbq("track", "CompleteRegistration");
+      }
+
       router.push("/registro-exitoso");
     } catch (e) {
       console.error(e);
       toast.error("Error de conexión. Revisa tu red e intenta otra vez.");
+      if (fbq) {
+        fbq("trackCustom", "RegistrationSubmitError", { category: "network" });
+      }
     }
   }
 
@@ -115,6 +154,12 @@ export function RegistrationFormSection() {
           <Reveal delay={0.08}>
             <form
               onSubmit={handleSubmit(onSubmit)}
+              onFocusCapture={() => {
+                if (!fbq || trackedStart.current) return;
+                trackedStart.current = true;
+                // La primera interacción real con el formulario.
+                fbq("trackCustom", "RegistrationFormStart");
+              }}
               className={cn(
                 "mx-auto w-full max-w-xl space-y-6 rounded-3xl border border-wine/15 bg-white/95 p-6 shadow-lg shadow-wine/5 ring-1 ring-gold/10 sm:space-y-7 sm:p-8 md:space-y-8 md:p-10",
                 LANDING_CARD_HOVER

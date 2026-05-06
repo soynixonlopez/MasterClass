@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import {
   CalendarDays,
   Clock,
@@ -16,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { EVENT, PLACEHOLDER_IMAGES } from "@/lib/constants";
 import { getYoutubeEmbedSrc } from "@/lib/youtube";
 import { AnimatedCta } from "@/components/landing/animated-cta";
+import { InPageAnchor } from "@/components/landing/in-page-anchor";
 
 export function Hero() {
   const embedSrc = getYoutubeEmbedSrc();
@@ -110,7 +110,7 @@ export function Hero() {
             >
               Apartar mi cupo
             </AnimatedCta>
-            <Link
+            <InPageAnchor
               href="#video-promo"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
@@ -119,8 +119,8 @@ export function Hero() {
             >
               <Play className="mr-2 size-5 shrink-0 fill-current" aria-hidden />
               Ver el video primero
-            </Link>
-            <Link
+            </InPageAnchor>
+            <InPageAnchor
               href="#curso"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "lg" }),
@@ -128,7 +128,7 @@ export function Hero() {
               )}
             >
               Ver programa del curso →
-            </Link>
+            </InPageAnchor>
           </motion.div>
         </div>
 

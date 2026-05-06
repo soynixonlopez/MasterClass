@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { buttonVariants } from "@/components/ui/button";
+import { scrollToAnchorByHash } from "@/lib/anchor-navigation";
 import { cn } from "@/lib/utils";
 
 type AnimatedCtaProps = {
@@ -25,6 +26,15 @@ export function AnimatedCta({
   fullWidth = false,
 }: AnimatedCtaProps) {
   const isPrimary = variant === "primary";
+  const isHashAnchor = href.startsWith("#") && href.length > 1;
+  const ctaClassName = cn(
+    buttonVariants({ size: "lg" }),
+    isPrimary
+      ? "relative min-h-[3.5rem] rounded-full border-0 bg-linear-to-r from-gold via-[#e8c65c] to-gold px-10 py-4 text-lg font-bold tracking-wide text-carbon shadow-lg shadow-gold/35 md:min-h-16 md:px-14 md:text-xl md:tracking-normal"
+      : "min-h-[3.5rem] rounded-full border-2 border-gold/50 bg-transparent px-8 py-4 text-lg font-bold text-champagne hover:bg-wine/50 md:min-h-16 md:px-10 md:text-xl",
+    fullWidth && "w-full justify-center lg:w-auto",
+    className
+  );
 
   return (
     <motion.div
@@ -55,20 +65,23 @@ export function AnimatedCta({
             : undefined
         }
       >
-        <Link
-          href={href}
-          title={title}
-          className={cn(
-            buttonVariants({ size: "lg" }),
-            isPrimary
-              ? "relative min-h-[3.5rem] rounded-full border-0 bg-linear-to-r from-gold via-[#e8c65c] to-gold px-10 py-4 text-lg font-bold tracking-wide text-carbon shadow-lg shadow-gold/35 md:min-h-16 md:px-14 md:text-xl md:tracking-normal"
-              : "min-h-[3.5rem] rounded-full border-2 border-gold/50 bg-transparent px-8 py-4 text-lg font-bold text-champagne hover:bg-wine/50 md:min-h-16 md:px-10 md:text-xl",
-            fullWidth && "w-full justify-center lg:w-auto",
-            className
-          )}
-        >
-          {children}
-        </Link>
+        {isHashAnchor ? (
+          <a
+            href={href}
+            title={title}
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToAnchorByHash(href);
+            }}
+            className={ctaClassName}
+          >
+            {children}
+          </a>
+        ) : (
+          <Link href={href} title={title} className={ctaClassName}>
+            {children}
+          </Link>
+        )}
       </motion.span>
     </motion.div>
   );

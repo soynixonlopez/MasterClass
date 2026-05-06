@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   LANDING_CARD_HOVER,
   Reveal,
@@ -8,6 +7,8 @@ import {
   StaggerReveal,
 } from "@/components/landing/landing-motion";
 import { MotionSection } from "@/components/landing/motion-section";
+import { AnimatedCta } from "@/components/landing/animated-cta";
+import { InPageAnchor } from "@/components/landing/in-page-anchor";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { EVENT } from "@/lib/constants";
@@ -16,7 +17,6 @@ import {
   getDiscountedFullPayUsd,
   getListPriceUsd,
 } from "@/lib/pricing";
-import { AnimatedCta } from "@/components/landing/animated-cta";
 
 const price = formatMoneyUsd(getListPriceUsd());
 const discounted = formatMoneyUsd(getDiscountedFullPayUsd());
@@ -47,9 +47,12 @@ export function PricingSection() {
           <p className="mx-auto mt-6 max-w-2xl text-lg font-medium text-champagne/90 md:text-xl">
             Sin sorpresas: precio fijo, descuento si pagas completo.
             Cuotas o abono si los necesitas. El equipo te guía por WhatsApp tras registrarte.{" "}
-            <Link href="#pagos" className="font-bold text-gold underline-offset-2 hover:underline">
+            <InPageAnchor
+              href="#pagos"
+              className="font-bold text-gold underline-offset-2 hover:underline"
+            >
               Ver opciones de pago flexibles
-            </Link>
+            </InPageAnchor>
             .
           </p>
         </Reveal>
@@ -121,7 +124,7 @@ export function PricingSection() {
                 </StaggerListItem>
               ))}
             </StaggerOl>
-            <Link
+            <InPageAnchor
               href="#registro"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
@@ -133,7 +136,7 @@ export function PricingSection() {
               )}
             >
               Ir al formulario de inscripción
-            </Link>
+            </InPageAnchor>
           </StaggerBox>
         </StaggerReveal>
       </div>
