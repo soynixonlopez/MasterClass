@@ -7,7 +7,7 @@ import { AnimatedCta } from "@/components/landing/animated-cta";
 export function FinalCtaSection() {
   return (
     <MotionSection className="border-t-2 border-gold/30 bg-linear-to-br from-burgundy via-wine to-burgundy py-20 md:py-28">
-      <div className="mx-auto max-w-4xl px-4 text-center md:px-6">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.28em] text-gold sm:text-sm md:tracking-widest">
             Antes de irte

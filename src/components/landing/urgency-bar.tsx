@@ -20,7 +20,7 @@ export function UrgencyBar() {
             "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.12) 45%, transparent 90%)",
         }}
       />
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-5">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-2.5 text-center sm:gap-3 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-4 md:gap-y-1">
           <span className="font-heading text-base font-bold uppercase tracking-[0.12em] text-warm sm:text-lg md:text-xl md:tracking-wide">
             Edición presencial limitada

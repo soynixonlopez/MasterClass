@@ -26,7 +26,7 @@ export function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_15%_0%,rgba(212,175,55,0.2),transparent_50%),radial-gradient(ellipse_at_90%_30%,rgba(138,21,56,0.4),transparent_45%),linear-gradient(180deg,rgba(11,11,13,0)_0%,rgba(11,11,13,0.9)_100%)]"
       />
-      <div className="relative mx-auto grid min-w-0 max-w-7xl gap-12 px-4 pb-24 pt-24 md:gap-14 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-28">
+      <div className="relative mx-auto grid min-w-0 max-w-7xl gap-12 px-4 pb-24 pt-24 sm:px-6 md:gap-14 lg:grid-cols-2 lg:items-start lg:gap-12 lg:px-8 lg:pt-24 xl:gap-16 xl:pt-28 2xl:items-center">
         <div className="min-w-0">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -40,7 +40,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05 }}
-            className="font-heading text-[clamp(2.5rem,11vw,4.1rem)] font-bold uppercase leading-[1.04] tracking-tight text-warm sm:text-[clamp(2.75rem,8vw,4.5rem)] md:text-7xl lg:text-8xl xl:text-[5rem] xl:leading-[1.02]"
+            className="font-heading text-[clamp(2.35rem,10vw,3.65rem)] font-bold uppercase leading-[1.06] tracking-tight text-warm sm:text-[clamp(2.5rem,7.5vw,3.85rem)] sm:leading-[1.05] md:text-[clamp(2.65rem,5.8vw,4rem)] md:leading-[1.045] lg:text-[clamp(2.65rem,3.95vw,3.55rem)] lg:leading-[1.06] xl:text-[clamp(3.1rem,3.4vw,4.35rem)] xl:leading-[1.04] 2xl:text-[clamp(3.5rem,2.85vw,5rem)] 2xl:leading-[1.02]"
           >
             {EVENT.heroTitle}
           </motion.h1>
@@ -100,7 +100,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.17 }}
-            className="mt-10 flex w-full max-w-xl flex-col gap-4 lg:max-w-none lg:flex-row lg:flex-wrap lg:items-center lg:gap-4"
+            className="mt-10 flex w-full flex-col gap-3 sm:gap-4"
           >
             <AnimatedCta
               href="#registro"
@@ -114,7 +114,7 @@ export function Hero() {
               href="#video-promo"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
-                "flex min-h-[3.25rem] w-full shrink-0 justify-center rounded-full border-2 border-white/25 bg-white/5 px-8 text-lg font-semibold text-warm backdrop-blur-sm hover:bg-white/10 md:min-h-14 md:text-xl lg:w-auto"
+                "flex min-h-[3.25rem] w-full min-w-0 justify-center rounded-full border-2 border-white/25 bg-white/5 px-8 text-lg font-semibold text-warm backdrop-blur-sm hover:bg-white/10 md:min-h-14 md:text-xl"
               )}
             >
               <Play className="mr-2 size-5 shrink-0 fill-current" aria-hidden />
@@ -124,7 +124,7 @@ export function Hero() {
               href="#curso"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "lg" }),
-                "min-h-[2.75rem] w-full justify-center text-center text-lg font-semibold text-champagne underline-offset-4 hover:text-gold hover:underline md:text-xl lg:w-auto lg:min-w-0"
+                "min-h-[2.75rem] w-full justify-center text-center text-lg font-semibold text-champagne underline-offset-4 hover:text-gold hover:underline md:text-xl"
               )}
             >
               Ver programa del curso →
@@ -137,7 +137,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.55, delay: 0.1 }}
-          className="relative mx-auto min-w-0 w-full max-w-md scroll-mt-28"
+          className="relative mx-auto min-w-0 w-full max-w-md scroll-mt-28 justify-self-center lg:mt-10 xl:mt-14 2xl:mt-0"
         >
           <div className="relative overflow-hidden rounded-3xl border-2 border-gold/40 shadow-2xl shadow-black/60 ring-4 ring-gold/10">
             {embedSrc ? (

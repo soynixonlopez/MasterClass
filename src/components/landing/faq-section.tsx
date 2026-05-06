@@ -40,7 +40,7 @@ const faqs = [
 export function FaqSection() {
   return (
     <MotionSection id="faq" className="bg-cream py-16 md:py-24">
-      <div className="mx-auto max-w-2xl px-4 md:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <h2 className="font-heading text-4xl font-bold uppercase leading-[1.1] text-carbon sm:text-5xl md:text-6xl">
             ¿Dudas? Aquí están las respuestas
@@ -72,15 +72,15 @@ export function FaqSection() {
         </Reveal>
         <Reveal
           className={cn(
-            "mx-auto mt-14 max-w-md rounded-3xl border-2 border-wine/15 bg-white p-8 text-center shadow-md md:p-10",
+            "mt-14 w-full rounded-3xl border-2 border-wine/15 bg-white p-8 text-center shadow-md md:p-10",
             LANDING_CARD_HOVER
           )}
         >
-          <p className="font-heading text-lg font-bold uppercase text-carbon md:text-xl">
+          <p className="mx-auto max-w-2xl font-heading text-lg font-bold uppercase text-carbon md:text-xl">
             ¿Lista? El formulario abajo lleva muy poco
           </p>
-          <div className="mt-8 flex justify-center">
-            <AnimatedCta href="#registro" variant="primary">
+          <div className="mt-8 w-full">
+            <AnimatedCta href="#registro" variant="primary" fullWidth>
               Ir al registro ahora
             </AnimatedCta>
           </div>

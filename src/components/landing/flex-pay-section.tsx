@@ -40,7 +40,7 @@ export function FlexPaySection() {
       id="pagos"
       className="border-t border-wine/10 bg-cream py-20 md:py-28"
     >
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+      <div className="mx-auto min-w-0 w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="inline-block rounded-full border border-wine/25 bg-white/90 px-5 py-2 text-center text-xs font-bold uppercase tracking-[0.2em] text-wine shadow-sm sm:text-sm sm:tracking-[0.22em]">
             Facilidades de pago
@@ -55,7 +55,7 @@ export function FlexPaySection() {
           </p>
         </Reveal>
 
-        <StaggerReveal className="mt-14 grid gap-6 md:grid-cols-3">
+        <StaggerReveal className="mt-14 grid w-full min-w-0 gap-6 md:grid-cols-3 md:items-stretch">
           {cards.map(({ icon: Icon, title, body, highlight }) => (
             <StaggerArticle
               key={title}

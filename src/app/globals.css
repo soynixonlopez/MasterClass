@@ -134,6 +134,8 @@
   }
   html {
     @apply font-sans;
+    /* Evita que el contenido se vea “corrido” a la izquierda cuando aparece scrollbar vertical */
+    scrollbar-gutter: stable;
   }
   @media (prefers-reduced-motion: no-preference) {
     html {

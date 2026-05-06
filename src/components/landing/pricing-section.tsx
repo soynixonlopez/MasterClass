@@ -39,7 +39,7 @@ const steps = [
 export function PricingSection() {
   return (
     <MotionSection className="bg-carbon py-20 md:py-28">
-      <div className="mx-auto max-w-5xl px-4 md:px-6">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <h2 className="font-heading text-4xl font-bold uppercase leading-[1.08] text-warm sm:text-5xl md:text-6xl">
             Sabes cuánto invertir y qué pasa después

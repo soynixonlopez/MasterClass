@@ -11,7 +11,7 @@ export function ProblemDesire() {
       id="transformacion"
       className="bg-cream py-20 text-elevation md:py-28"
     >
-      <div className="mx-auto max-w-4xl px-4 md:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <p className="text-center text-sm font-bold uppercase tracking-widest text-wine">
             ¿Te suena familiar?
