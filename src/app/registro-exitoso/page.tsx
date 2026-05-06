@@ -16,6 +16,12 @@ import {
   receiptWhatsAppHref,
   getSupportWaHref,
 } from "@/lib/post-registration-details";
+import {
+  ALTERNATIVE_PAYMENTS_HIGHLIGHT,
+  ALTERNATIVE_PAYMENTS_LEAD,
+  ALTERNATIVE_PAYMENTS_TRAIL,
+  getEventSummaryLines,
+} from "@/lib/event-confirmation-copy";
 
 const groupUrl = getGroupInviteUrl();
 const { holder, bankName, account: bankAccountRaw, accountConfigured: bankAccountConfigured } =
@@ -25,8 +31,7 @@ const supportHref = getSupportWaHref();
 
 export const metadata: Metadata = {
   title: "Registro recibido",
-  description:
-    "Grupo de WhatsApp, transferencia bancaria y envío de comprobante por WhatsApp.",
+  description: `${EVENT.title} · ${EVENT.dateLabel} (${EVENT.schedule}). ${EVENT.locationName}, ${EVENT.locationAddress}. Grupo, transferencia y comprobante.`,
   robots: { index: false, follow: false },
 };
 
@@ -35,6 +40,7 @@ const sectionTitle =
 
 export default function RegistroExitosoPage() {
   const receiptContacts = buildReceiptContacts();
+  const eventInfo = getEventSummaryLines();
 
   function waLink(digits: string) {
     return receiptWhatsAppHref(digits);
@@ -51,14 +57,33 @@ export default function RegistroExitosoPage() {
             Grupo, transferencia y comprobante
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-[1.05rem] leading-relaxed text-elevation/80 md:text-lg">
-            Tienes todo en esta pantalla: únete al grupo, transfieres solo a la cuenta indicada y envías tu
-            captura por WhatsApp cuando hayas pagado.
+            Todo lo que ves aquí coincide con lo que también te enviamos por correo. Reserva estos datos para
+            tu agenda.
           </p>
         </header>
 
         <div className="mt-12 rounded-[1.75rem] border-2 border-wine/15 bg-white p-8 shadow-xl shadow-wine/5 md:mt-14 md:p-12 md:px-14">
+          {/* Resumen del evento */}
+          <section className="rounded-2xl border border-wine/12 bg-cream/60 p-6 md:p-8">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-wine">Tu master class</p>
+            <h2 className="mt-3 font-heading text-xl font-bold leading-snug text-carbon md:text-2xl">
+              {eventInfo.title}
+            </h2>
+            <dl className="mt-5 space-y-3 text-[0.9375rem] leading-relaxed text-elevation/90 md:text-base">
+              <div>
+                <dt className="text-xs font-bold uppercase tracking-wider text-elevation/55">Fecha y horario</dt>
+                <dd className="mt-1 font-semibold text-carbon">{eventInfo.when}</dd>
+              </div>
+              <div>
+                <dt className="text-xs font-bold uppercase tracking-wider text-elevation/55">Ubicación</dt>
+                <dd className="mt-1 font-semibold text-carbon">{eventInfo.whereVenue}</dd>
+                <dd className="mt-0.5 text-elevation/85">{eventInfo.whereAddress}</dd>
+              </div>
+            </dl>
+          </section>
+
           {/* Grupo */}
-          <section className="pb-12 md:pb-14">
+          <section className="pb-12 pt-12 md:pb-14 md:pt-14">
             <p className={sectionTitle}>Grupo del encuentro</p>
             <p className="mt-4 text-base leading-relaxed text-elevation/88 md:text-[1.0625rem]">
               Anuncios del taller, ubicación práctica y avisos de último minuto van en el grupo oficial.
@@ -90,7 +115,7 @@ export default function RegistroExitosoPage() {
 
           {/* Pago */}
           <section className="border-t border-wine/15 pt-12 md:pb-2 md:pt-14">
-            <p className={sectionTitle}>Solo cobramos por transferencia</p>
+            <p className={sectionTitle}>Tu pago: transferencia y otros medios</p>
             <p className="mt-5 text-base leading-relaxed text-elevation/88 md:text-[1.0625rem]">
               <strong className="font-semibold text-carbon">
                 Lista: {formatMoneyUsd(getListPriceUsd())}
@@ -105,10 +130,9 @@ export default function RegistroExitosoPage() {
 
             <div className="mt-6 rounded-2xl border border-gold/35 bg-linear-to-br from-champagne/50 to-white p-5 md:p-6">
               <p className="text-sm font-semibold leading-snug text-elevation md:text-[0.9375rem]">
-                Para <strong>Yappy, Zelle u otros medios</strong> no tenemos cobro directo desde esta página:
-                escríbenos a{" "}
-                <strong className="text-wine">soporte por WhatsApp</strong> y te orientamos caso por caso (usa
-                el botón verde del borde inferior o cualquier enlace verde más abajo).
+                {ALTERNATIVE_PAYMENTS_LEAD}
+                <strong className="text-wine">{ALTERNATIVE_PAYMENTS_HIGHLIGHT}</strong>
+                {ALTERNATIVE_PAYMENTS_TRAIL}
               </p>
             </div>
 

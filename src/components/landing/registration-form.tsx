@@ -106,8 +106,8 @@ export function RegistrationFormSection() {
                 </span>
               </h2>
               <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-elevation/80 sm:text-[1.0625rem]">
-                Nombre, WhatsApp y correo. Sin cobro aquí; al enviar ves el grupo y las formas de pagar en
-                una sola vista.
+                Nombre, WhatsApp y correo. Sin cobro aquí; al enviar recibes un resumen al correo y ves en
+                el sitio grupo y formas de pagar en una sola vista.
               </p>
             </header>
           </Reveal>
@@ -194,7 +194,8 @@ export function RegistrationFormSection() {
                     htmlFor="accepted_contact"
                     className="cursor-pointer text-base font-normal !text-carbon dark:!text-carbon"
                   >
-                    Acepto recibir por WhatsApp la información del evento y cómo completar mi cupo.
+                    Acepto recibir por correo electrónico la información del evento y cómo completar mi
+                    cupo, y ver ese mismo contenido también en esta web (siguiente pantalla).
                   </Label>
                   {errors.accepted_contact && (
                     <p className="text-sm font-medium text-red-700">
@@ -219,8 +220,9 @@ export function RegistrationFormSection() {
                 )}
               </Button>
               <p className="text-center text-sm leading-relaxed text-elevation/75 md:text-base">
-                Al enviar recibimos tu solicitud con calma y te contestamos por WhatsApp. Si el
-                grupo ya está lleno, te lo decimos antes de que pagues algo.
+                Al enviar guardamos tu solicitud, te llega el resumen al correo indicado y en el sitio
+                verás grupo y datos de pago. El equipo también puede orientarte por WhatsApp con el número
+                que dejaste. Si el grupo ya está lleno, te lo decimos antes de que pagues algo.
               </p>
             </form>
           </Reveal>

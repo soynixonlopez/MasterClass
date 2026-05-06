@@ -19,7 +19,8 @@ export const quickRegistrationSchema = z.object({
   whatsapp: z.string().min(8, "Ingresa un WhatsApp válido"),
   email: z.string().email("Correo electrónico inválido"),
   accepted_contact: z.boolean().refine((v) => v === true, {
-    message: "Debes aceptar el contacto por WhatsApp",
+    message:
+      "Debes aceptar recibir la información por correo y consultarla en este sitio",
   }),
 });
 
@@ -42,7 +43,8 @@ export const registrationSchema = z.object({
   payment_proof: z.string().optional(),
   notes: z.string().optional(),
   accepted_contact: z.boolean().refine((v) => v === true, {
-    message: "Debes aceptar el contacto por WhatsApp",
+    message:
+      "Debes aceptar recibir la información por correo y consultarla en este sitio",
   }),
 });
 

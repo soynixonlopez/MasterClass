@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Oswald, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { Providers } from "@/components/providers";
 import { EVENT } from "@/lib/constants";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col overflow-x-hidden bg-background text-foreground">
         <Providers>{children}</Providers>
+        <MetaPixel />
       </body>
     </html>
   );

@@ -1,5 +1,12 @@
 import { EVENT } from "@/lib/constants";
 import {
+  ALTERNATIVE_PAYMENTS_LEAD,
+  ALTERNATIVE_PAYMENTS_HIGHLIGHT,
+  ALTERNATIVE_PAYMENTS_TRAIL,
+  ALTERNATIVE_PAYMENTS_SUPPORT_COPY,
+  getEventSummaryLines,
+} from "@/lib/event-confirmation-copy";
+import {
   buildReceiptContacts,
   getBankTransferDetails,
   getGroupInviteUrl,
@@ -37,7 +44,18 @@ export function buildRegistrationWelcomeEmail(input: {
   const pricing = getPricingCopy();
   const successUrl = getSuccessPageUrl();
   const receiptContacts = buildReceiptContacts();
+  const lines = getEventSummaryLines();
   const subject = `${EVENT.title.slice(0, 55)} · Tu siguiente paso (grupo y pago)`;
+
+  const eventDetailBoxHtml = `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;border-radius:14px;border:1px solid rgba(138,21,56,0.14);background:#fcf9f5;">
+        <tr><td style="padding:18px 20px;">
+          <span style="font-size:11px;font-weight:800;color:${WINE};letter-spacing:0.14em;text-transform:uppercase;">Tu master class</span>
+          <p style="margin:10px 0 0;font-size:16px;font-weight:700;line-height:1.38;color:${CARBON};">${escapeHtml(lines.title)}</p>
+          <p style="margin:10px 0 0;color:${CARBON};font-size:14px;line-height:1.5;"><strong>Fecha y horario</strong> — ${escapeHtml(lines.when)}</p>
+          <p style="margin:8px 0 0;color:${CARBON};font-size:14px;line-height:1.55;"><strong>Ubicación</strong> — ${escapeHtml(lines.whereVenue)}, ${escapeHtml(lines.whereAddress)}</p>
+        </td></tr>
+      </table>`;
 
   let bankBlockHtml = "";
   if (accountConfigured) {
@@ -85,12 +103,17 @@ export function buildRegistrationWelcomeEmail(input: {
               <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:rgba(250,247,242,0.72);">My Hair by Sandra</p>
               <h1 style="margin:12px 0 0;font-size:22px;line-height:1.2;font-weight:800;color:#faf7f2;letter-spacing:-0.02em;">${headlineHtml}</h1>
               <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:rgba(250,247,242,0.92);">${escapeHtml(EVENT.title)}</p>
+              <p style="margin:8px 0 0;font-size:13px;line-height:1.45;color:rgba(250,247,242,0.9);">${escapeHtml(lines.when)}</p>
+              <p style="margin:4px 0 0;font-size:12px;line-height:1.5;color:rgba(250,247,242,0.84);">${escapeHtml(lines.whereVenue)} — ${escapeHtml(lines.whereAddress)}</p>
               <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:22px;"><tr><td style="border-radius:9999px;background:rgba(212,175,55,0.35);height:4px;width:56px;line-height:0;font-size:0;">&#8203;</td></tr></table>
             </td>
           </tr>
           <tr>
             <td style="padding:28px 28px 22px;color:${CARBON};font-size:15px;line-height:1.65;">
-              <p style="margin:0;color:${MUTED};">Tu registro ya está guardado. En tres pasos cierres el ciclo:</p>
+              <p style="margin:0;color:${MUTED};">Tu registro ya está guardado. Conserva estos datos del evento siempre a la vista:</p>
+              ${eventDetailBoxHtml}
+
+              <p style="margin:22px 0 0;color:${MUTED};font-size:14px;">En tres pasos cierras tu cupo:</p>
 
               <!-- Paso 1 -->
               <table role="presentation" width="100%" style="margin-top:26px;border-left:4px solid ${GOLD};background:linear-gradient(90deg,rgba(244,230,193,0.45) 0%,#fff 100%);border-radius:0 14px 14px 0;">
@@ -104,10 +127,10 @@ export function buildRegistrationWelcomeEmail(input: {
               <!-- Paso 2 -->
               <table role="presentation" width="100%" style="margin-top:20px;border-left:4px solid ${WINE};background:#fafafa;border-radius:0 14px 14px 0;">
                 <tr><td style="padding:16px 18px;">
-                  <span style="font-size:11px;font-weight:800;color:${WINE};letter-spacing:0.12em;text-transform:uppercase;">Segundo paso · Solo transferencia</span>
+                  <span style="font-size:11px;font-weight:800;color:${WINE};letter-spacing:0.12em;text-transform:uppercase;">Segundo paso · Pago</span>
                   <p style="margin:8px 0 0;color:${CARBON};">
                     Lista: <strong>${escapeHtml(pricing.listPrice)}</strong> · Un solo pago: <strong>${escapeHtml(pricing.fullPay)}</strong> (${pricing.discountPercent}% menos).</p>
-                  <p style="margin:12px 0 0;color:${MUTED};font-size:13px;line-height:1.55;"><strong>Yappy, Zelle u otros medios</strong> los coordinamos contigo por WhatsApp; desde aquí cobramos <strong>solo por transferencia bancaria</strong> al titular indicado.</p>
+                  <p style="margin:12px 0 0;color:${MUTED};font-size:13px;line-height:1.55;">${escapeHtml(ALTERNATIVE_PAYMENTS_LEAD)}<strong>${escapeHtml(ALTERNATIVE_PAYMENTS_HIGHLIGHT)}</strong>${escapeHtml(ALTERNATIVE_PAYMENTS_TRAIL)} La <strong>transferencia bancaria</strong> sí la haces con los datos indicados abajo.</p>
                   ${bankBlockHtml}
                 </td></tr>
               </table>
@@ -126,7 +149,7 @@ export function buildRegistrationWelcomeEmail(input: {
                 <a href="${successUrl}" style="display:inline-block;color:${WINE};font-weight:700;font-size:13px;text-decoration:underline;text-underline-offset:4px;"
                   target="_blank" rel="noopener noreferrer">Ver todo en pantalla grande en el sitio</a>
               </div>
-              <p style="margin:22px 0 0;color:${MUTED};font-size:13px;line-height:1.5;text-align:center;">${EVENT.dateLabel} · ${EVENT.schedule}<br>${escapeHtml(EVENT.locationName)} — ${escapeHtml(EVENT.locationAddress)}</p>
+              <p style="margin:22px 0 0;color:${MUTED};font-size:12px;line-height:1.5;text-align:center;">${escapeHtml(lines.when)} · ${escapeHtml(lines.whereVenue)}</p>
 
               <hr style="border:none;border-top:1px solid rgba(138,21,56,0.1);margin:26px 0 18px;">
               <p style="margin:0;color:${MUTED};font-size:11px;line-height:1.5;text-align:center;">Correo automático del registro. Si no fuiste tú, ignora este mensaje.</p>
@@ -166,11 +189,11 @@ ${EVENT.locationName} — ${EVENT.locationAddress}
 PRIMER PASO — Grupo oficial
 ${groupLine}
 
-SEGUNDO PASO — Pago por transferencia
+SEGUNDO PASO — Pago
 Lista: ${pricing.listPrice}. Un solo pago: ${pricing.fullPay} (${pricing.discountPercent}% menos si pagas todo de una vez).
 
 ${bankLines}
-Para Yappy, Zelle u otros medios, escribe por WhatsApp al equipo desde la página de confirmación.
+${ALTERNATIVE_PAYMENTS_SUPPORT_COPY} La transferencia bancaria la haces con los datos indicados arriba.
 
 TERCER PASO — Envía tu comprobante por WhatsApp
 ${receiptLines}

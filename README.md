@@ -36,6 +36,7 @@ Copia `.env.local.example` a `.env.local` y completa:
 Opcional para SEO:
 
 - `NEXT_PUBLIC_SITE_URL` — URL canónica del sitio (ej. `https://tudominio.com`). Si no está definida, en `layout` se usa `http://localhost:3000`.
+- `NEXT_PUBLIC_META_PIXEL_ID` — Opcional. ID numérico del [Meta Pixel](https://developers.facebook.com/docs/meta-pixel); si lo defines, Next.js carga el script en el `layout` (PageView al abrir el sitio y en cada cambio de ruta dentro de la app).
 
 ### 2. Base de datos y seguridad (Supabase)
 
