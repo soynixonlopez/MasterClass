@@ -29,6 +29,9 @@ Copia `.env.local.example` a `.env.local` y completa:
 | `NEXT_PUBLIC_BANK_NAME` | Opcional: nombre del banco (por defecto «Banco General») |
 | `NEXT_PUBLIC_YAPPY_NUMBER` | Solo referencia en otros textos si aplica; la confirmación prioriza transferencia y deriva otros medios a WhatsApp |
 | `NEXT_PUBLIC_YOUTUBE_VIDEO_ID` | ID del video o URL de YouTube para el embed en el hero |
+| `RESEND_API_KEY` | [Resend](https://resend.com) — envía el correo con grupo WhatsApp, datos de pago y enlaces para comprobante |
+| `REGISTRATION_FROM_EMAIL` | Remitente verificado (ej. `Nombre <noreply@tudominio.com>`). Si no está, se usa `Master Class Colorimetría <onboarding@resend.dev>` |
+| `REGISTRATION_REPLY_TO` | Opcional: correo donde llegan las respuestas si alguien pulsa «Responder» |
 
 Opcional para SEO:
 

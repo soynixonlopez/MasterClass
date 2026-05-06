@@ -9,85 +9,19 @@ import {
   getDiscountedFullPayUsd,
   getListPriceUsd,
 } from "@/lib/pricing";
+import {
+  buildReceiptContacts,
+  getBankTransferDetails,
+  getGroupInviteUrl,
+  receiptWhatsAppHref,
+  getSupportWaHref,
+} from "@/lib/post-registration-details";
 
-const groupUrl = process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL?.trim() ?? "";
+const groupUrl = getGroupInviteUrl();
+const { holder, bankName, account: bankAccountRaw, accountConfigured: bankAccountConfigured } =
+  getBankTransferDetails();
 
-/** Dígitos WhatsApp — Sandra (principal) */
-const sandraDigits =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") ?? "";
-
-/** Carmen vía env dedicado */
-const carmenEnvDigits =
-  (
-    process.env.NEXT_PUBLIC_WHATSAPP_CARMEN?.trim() ||
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_CARMEN?.trim() ||
-    ""
-  ).replace(/\D/g, "") ?? "";
-
-/** Fallback segundo contacto si no hay env de Carmen */
-const secondLineDigits =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_2?.replace(/\D/g, "") ?? "";
-
-const nameSandra =
-  process.env.NEXT_PUBLIC_WHATSAPP_NAME_SANDRA?.trim() || "Sandra González";
-const nameCarmen =
-  process.env.NEXT_PUBLIC_WHATSAPP_NAME_CARMEN?.trim() || "Carmen González";
-
-const holder =
-  process.env.NEXT_PUBLIC_BANK_ACCOUNT_HOLDER?.trim() ??
-  "Sandra Milena Reyes";
-const bankName =
-  process.env.NEXT_PUBLIC_BANK_NAME?.trim() ?? "Banco General";
-
-/** Cuenta IBAN / número (obligatorio para mostrar bloque bancario útil) */
-const bankAccountRaw = process.env.NEXT_PUBLIC_BANK_ACCOUNT?.trim() ?? "";
-const bankAccountConfigured =
-  bankAccountRaw.length > 0 && !bankAccountRaw.includes("Configura");
-
-const receiptMessage = encodeURIComponent(
-  `Hola, envío mi comprobante de pago para la Master Class: ${EVENT.title}.`
-);
-
-const supportMessage = encodeURIComponent(
-  "Hola, escribo por soporte después de registrar la Master Class (pago u otra consulta)."
-);
-
-function waLink(num: string) {
-  return `https://wa.me/${num}?text=${receiptMessage}`;
-}
-
-function supportWaLink(num: string) {
-  return `https://wa.me/${num}?text=${supportMessage}`;
-}
-
-type ReceiptContact = { digits: string; label: string };
-
-function buildReceiptContacts(): ReceiptContact[] {
-  const list: ReceiptContact[] = [];
-  if (sandraDigits)
-    list.push({ digits: sandraDigits, label: nameSandra });
-
-  let carmenDigits = carmenEnvDigits;
-  if (!carmenDigits && secondLineDigits && secondLineDigits !== sandraDigits)
-    carmenDigits = secondLineDigits;
-
-  if (
-    carmenDigits &&
-    carmenDigits !== sandraDigits &&
-    !list.some((x) => x.digits === carmenDigits)
-  ) {
-    list.push({ digits: carmenDigits, label: nameCarmen });
-  }
-
-  return list;
-}
-
-/** Soporte flotante: mismo WhatsApp que Sandra (`NEXT_PUBLIC_WHATSAPP_NUMBER`) */
-const supportDigits =
-  sandraDigits || carmenEnvDigits || secondLineDigits || "";
-
-const supportHref =
-  supportDigits.length > 0 ? supportWaLink(supportDigits) : "";
+const supportHref = getSupportWaHref();
 
 export const metadata: Metadata = {
   title: "Registro recibido",
@@ -101,6 +35,10 @@ const sectionTitle =
 
 export default function RegistroExitosoPage() {
   const receiptContacts = buildReceiptContacts();
+
+  function waLink(digits: string) {
+    return receiptWhatsAppHref(digits);
+  }
 
   return (
     <div className="min-h-screen bg-cream pb-32 text-carbon md:pb-28">

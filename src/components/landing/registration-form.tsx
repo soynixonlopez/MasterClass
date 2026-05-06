@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createClient } from "@/lib/supabase/client";
 import {
   quickRegistrationSchema,
   type QuickRegistrationInput,
@@ -49,49 +48,37 @@ export function RegistrationFormSection() {
 
   async function onSubmit(data: QuickRegistrationInput) {
     try {
-      const supabase = createClient();
-      const { error } = await supabase.from("registrations").insert({
-        full_name: data.full_name.trim(),
-        whatsapp: data.whatsapp.trim(),
-        email: data.email.trim(),
-        experience_level: null,
-        payment_method: null,
-        amount_paid: 0,
-        collection_target: "list",
-        payment_proof: null,
-        notes: "Registro web. Confirmación con grupo WhatsApp y datos de pago.",
-        accepted_contact: data.accepted_contact,
-        payment_status: "pendiente",
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: data.full_name.trim(),
+          whatsapp: data.whatsapp.trim(),
+          email: data.email.trim(),
+          accepted_contact: data.accepted_contact,
+        }),
       });
 
-      if (error) {
-        const err = error as {
-          message?: string;
-          details?: string;
-          hint?: string;
-          code?: string;
-        };
-        const readable =
-          [err.message, err.details].filter(Boolean).join(" ").trim() || null;
-        console.error("[registrations insert]", readable ?? "(sin mensaje)", err);
+      const payload = (await res.json().catch(() => null)) as
+        | { ok?: boolean; emailSent?: boolean; error?: string }
+        | null;
 
-        const looksLikeRls =
-          readable?.toLowerCase().includes("permission denied") ||
-          readable?.toLowerCase().includes("row-level security") ||
-          readable?.toLowerCase().includes("violates row-level security") ||
-          err.code === "42501";
-
+      if (!res.ok || !payload?.ok) {
+        const msg =
+          typeof payload?.error === "string" ? payload.error : null;
         toast.error(
-          looksLikeRls
-            ? "Tu sesión tiene permiso limitado para este formulario. Cierra sesión del panel administrador y vuelve a enviar, o aplica la migración 003 en Supabase."
-            : readable
-              ? `No pudimos enviar tu registro: ${readable}`
-              : "No pudimos enviar tu registro. Revisa tu conexión e inténtalo de nuevo.",
+          msg ||
+            "No pudimos enviar tu registro. Revisa tu conexión e inténtalo de nuevo.",
         );
         return;
       }
 
-      toast.success("Registro recibido. Ya puedes revisar grupo y datos de pago.");
+      const emailPart = payload.emailSent
+        ? " Revisa tu correo: te enviamos el resumen con grupo, datos de pago y enlaces para el comprobante."
+        : "";
+      toast.success(
+        `Registro recibido.${emailPart} Ya puedes revisar grupo y datos de pago en la siguiente pantalla.`,
+      );
       router.push("/registro-exitoso");
     } catch (e) {
       console.error(e);
