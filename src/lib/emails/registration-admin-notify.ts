@@ -1,3 +1,5 @@
+import { getSiteBaseUrl } from "@/lib/post-registration-details";
+
 const WINE = "#8a1538";
 const BURGUNDY = "#6e1023";
 const CREAM = "#fff7ea";
@@ -37,7 +39,8 @@ export function buildNewRegistrationAdminEmail(input: {
   const first = name.split(/\s+/)[0] ?? "";
   const waHref = digits ? leadWhatsAppHref(digits, first) : "";
 
-  const subject = `Nuevo registro — ${name.slice(0, 80)}`;
+  const site = getSiteBaseUrl();
+  const subject = `Master Class Colorimetría · Registro web: ${name.slice(0, 64)}`;
 
   const waBtn = waHref
     ? `<a href="${escapeHtml(waHref)}" style="display:inline-block;margin-top:16px;background:${WHATSAPP_GREEN};color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:14px 24px;border-radius:12px;text-align:center;"
@@ -60,6 +63,7 @@ export function buildNewRegistrationAdminEmail(input: {
           </tr>
           <tr>
             <td style="padding:22px 24px 26px;color:${CARBON};font-size:15px;line-height:1.55;">
+              <p style="margin:0 0 14px;color:${MUTED};font-size:14px;line-height:1.5;">Alguien completó el formulario de inscripción en tu sitio. No es publicidad: es un aviso operativo con los datos que dejó.</p>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-radius:12px;border:1px solid rgba(138,21,56,0.12);background:#fcf9f5;">
                 <tr><td style="padding:14px 16px;">
                   <p style="margin:0 0 8px;font-size:12px;font-weight:800;color:${WINE};letter-spacing:0.08em;text-transform:uppercase;">Datos</p>
@@ -70,6 +74,10 @@ export function buildNewRegistrationAdminEmail(input: {
                 </td></tr>
               </table>
               ${waBtn}
+              <p style="margin:22px 0 0;padding-top:18px;border-top:1px solid rgba(138,21,56,0.1);color:${MUTED};font-size:12px;line-height:1.5;">
+                Origen: <a href="${escapeHtml(site)}" style="color:${WINE};font-weight:600;">${escapeHtml(site)}</a>
+                · Mensaje automático del sistema de registros.
+              </p>
             </td>
           </tr>
         </table>
@@ -80,7 +88,8 @@ export function buildNewRegistrationAdminEmail(input: {
 </html>`;
 
   const textLines = [
-    "Nueva persona registrada en la Master Class.",
+    "Master Class Colorimetría — aviso de registro web",
+    "Alguien completó el formulario de inscripción (mensaje operativo, no publicidad).",
     "",
     `Nombre: ${name}`,
     `Correo: ${mail}`,
@@ -88,6 +97,8 @@ export function buildNewRegistrationAdminEmail(input: {
     `Aceptó contacto: ${input.acceptedContact ? "Sí" : "No"}`,
     "",
     waHref ? `Abrir WhatsApp: ${waHref}` : "",
+    "",
+    `Sitio: ${site}`,
   ].filter(Boolean);
 
   return { subject, html, text: textLines.join("\n") };

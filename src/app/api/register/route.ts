@@ -108,6 +108,8 @@ export async function POST(request: Request) {
         process.env.REGISTRATION_ADMIN_NOTIFY_EMAIL?.trim() ||
         "cyajairagonzalez@gmail.com";
 
+      const adminReplyTo = replyTo || adminTo;
+
       const [welcomeResult, adminResult] = await Promise.all([
         resend.emails.send({
           from: fromEmail,
@@ -116,13 +118,16 @@ export async function POST(request: Request) {
           subject: welcome.subject,
           html: welcome.html,
           text: welcome.text,
+          tags: [{ name: "type", value: "registration-welcome" }],
         }),
         resend.emails.send({
           from: fromEmail,
           to: adminTo,
+          replyTo: adminReplyTo,
           subject: adminMail.subject,
           html: adminMail.html,
           text: adminMail.text,
+          tags: [{ name: "type", value: "registration-admin-notify" }],
         }),
       ]);
 
