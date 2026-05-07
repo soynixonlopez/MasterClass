@@ -40,7 +40,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05 }}
-            className="font-heading text-[clamp(2.35rem,10vw,3.65rem)] font-bold uppercase leading-[1.06] tracking-tight text-warm sm:text-[clamp(2.5rem,7.5vw,3.85rem)] sm:leading-[1.05] md:text-[clamp(2.65rem,5.8vw,4rem)] md:leading-[1.045] lg:text-[clamp(2.65rem,3.95vw,3.55rem)] lg:leading-[1.06] xl:text-[clamp(3.1rem,3.4vw,4.35rem)] xl:leading-[1.04] 2xl:text-[clamp(3.5rem,2.85vw,5rem)] 2xl:leading-[1.02]"
+            className="font-heading text-[clamp(2.35rem,10vw,3.65rem)] font-bold uppercase leading-[1.06] tracking-tight text-warm sm:text-[clamp(2.5rem,7.5vw,3.85rem)] sm:leading-[1.05] md:text-[clamp(2.65rem,5.8vw,4rem)] md:leading-[1.045] lg:text-[clamp(2.9rem,5.5vw,5.35rem)] lg:font-extrabold lg:leading-[1.04] xl:text-[clamp(3.35rem,5vw,5.95rem)] xl:font-black xl:leading-[1.03] 2xl:text-[clamp(3.85rem,4.25vw,7rem)] 2xl:leading-[1.02]"
           >
             {EVENT.heroTitle}
           </motion.h1>
