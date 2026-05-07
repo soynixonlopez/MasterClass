@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { buildNewRegistrationAdminEmail } from "@/lib/emails/registration-admin-notify";
 import { buildRegistrationWelcomeEmail } from "@/lib/emails/registration-welcome";
 import { quickRegistrationSchema } from "@/lib/validations/registration";
 
@@ -93,27 +94,52 @@ export async function POST(request: Request) {
   } else {
     try {
       const resend = new Resend(resendKey);
-      const mail = buildRegistrationWelcomeEmail({
+      const welcome = buildRegistrationWelcomeEmail({
         recipientName: data.full_name.trim(),
       });
-      const replyTo = process.env.REGISTRATION_REPLY_TO?.trim();
-
-      const sendResult = await resend.emails.send({
-        from: fromEmail,
-        to: data.email.trim(),
-        ...(replyTo ? { replyTo } : {}),
-        subject: mail.subject,
-        html: mail.html,
-        text: mail.text,
+      const adminMail = buildNewRegistrationAdminEmail({
+        fullName: data.full_name.trim(),
+        whatsapp: data.whatsapp.trim(),
+        email: data.email.trim(),
+        acceptedContact: data.accepted_contact,
       });
+      const replyTo = process.env.REGISTRATION_REPLY_TO?.trim();
+      const adminTo =
+        process.env.REGISTRATION_ADMIN_NOTIFY_EMAIL?.trim() ||
+        "cyajairagonzalez@gmail.com";
 
-      if (sendResult.error) {
+      const [welcomeResult, adminResult] = await Promise.all([
+        resend.emails.send({
+          from: fromEmail,
+          to: data.email.trim(),
+          ...(replyTo ? { replyTo } : {}),
+          subject: welcome.subject,
+          html: welcome.html,
+          text: welcome.text,
+        }),
+        resend.emails.send({
+          from: fromEmail,
+          to: adminTo,
+          subject: adminMail.subject,
+          html: adminMail.html,
+          text: adminMail.text,
+        }),
+      ]);
+
+      if (welcomeResult.error) {
         console.error(
-          "[api/register] Resend:",
-          sendResult.error.message ?? sendResult.error,
+          "[api/register] Resend (bienvenida):",
+          welcomeResult.error.message ?? welcomeResult.error,
         );
       } else {
         emailSent = true;
+      }
+
+      if (adminResult.error) {
+        console.error(
+          "[api/register] Resend (notificación admin):",
+          adminResult.error.message ?? adminResult.error,
+        );
       }
     } catch (e) {
       console.error("[api/register] email exception:", e);
